@@ -1,70 +1,20 @@
 #!/bin/bash
 
-UUID="${G2RAY_UUID:-$(python3 -c "import uuid; print(uuid.uuid4())")}"
-PORT="${G2RAY_PORT:-443}"
-NETWORK="${G2RAY_NETWORK:-xhttp}"
-PATH_VAL="${G2RAY_PATH:-/}"
-CODESPACE="${CODESPACE_NAME:-g2ray}"
-SNI="${G2RAY_SNI:-${CODESPACE}-${PORT}.app.github.dev}"
-TLS="${G2RAY_TLS:-true}"
-MODE="${G2RAY_MODE:-packet-up}"
-FRAG="${G2RAY_FRAGMENT:-false}"
-FRAG_LEN="${G2RAY_FRAG_LEN:-100-200}"
-FRAG_INT="${G2RAY_FRAG_INT:-10-20}"
-REALITY="${G2RAY_REALITY:-false}"
-REALITY_PK="${G2RAY_REALITY_PK:-}"
-REALITY_SID="${G2RAY_REALITY_SID:-}"
-REALITY_SNI="${G2RAY_REALITY_SNI:-}"
-HOST_IP="${G2RAY_HOST:-94.130.50.12}"
-FP="${G2RAY_FP:-chrome}"
-WS_EARLY="${G2RAY_WS_EARLY:-true}"
-WS_HOST="${G2RAY_WS_HOST:-example.com}"
-H2_HOST="${G2RAY_H2_HOST:-example.com}"
-H2_PATH="${G2RAY_H2_PATH:-/}"
-GRPC_SVC="${G2RAY_GRPC_SVC:-test}"
-GRPC_MULTI="${G2RAY_GRPC_MULTI:-false}"
-NOISE="${G2RAY_NOISE:-false}"
-NOISE_PKT="${G2RAY_NOISE_PKT:-d200}"
-NOISE_SRC="${G2RAY_NOISE_SRC:-}"
-
-echo "======================================"
-echo "g2ray - VLESS Proxy on Codespaces"
-echo "======================================"
-echo ""
-echo "UUID: $UUID"
-echo "Port: $PORT"
-echo "Network: $NETWORK"
-echo "SNI: $SNI"
-echo "TLS: $TLS"
-echo "Fragment: $FRAG"
-echo "Reality: $REALITY"
-echo "Codespace: $CODESPACE"
-echo ""
-
+echo "[g2ray] Generating dynamic config..."
 python3 /app/generate_config.py
 
 echo ""
-echo "======================================"
-echo "Connection string:"
-echo "======================================"
+echo "================================================"
+echo "[g2ray] Starting Xray in tmux session..."
+echo "================================================"
 
-SECURITY="none"
-if [ "$TLS" = "true" ]; then
-    if [ "$REALITY" = "true" ]; then
-        SECURITY="reality"
-    else
-        SECURITY="tls"
-    fi
-fi
+tmux kill-session -t g2ray 2>/dev/null || true
+tmux new-session -d -s g2ray
+tmux send-keys -t g2ray "sudo /usr/local/bin/xray run -c /etc/xray/g2ray.json &>/tmp/xray.log" Enter
+sleep 3
+show-link.sh
 
-echo "vless://${UUID}@${HOST_IP}:${PORT}?encryption=none&type=${NETWORK}&security=${SECURITY}&sni=${SNI}&insecure=1&allowInsecure=1#g2ray-${CODESPACE}"
 echo ""
-echo "======================================"
-echo "Web UI:"
-echo "======================================"
-echo "http://${CODESPACE}-3000.app.github.dev"
-echo ""
-echo "Start Xray..."
-echo ""
-
-exec /usr/local/bin/xray -c /etc/xray/g2ray.json
+echo "[g2ray] Server running in tmux session 'g2ray'"
+echo "[g2ray] View logs: tmux attach -t g2ray"
+echo "[g2ray] Stop session: tmux kill-session -t g2ray"

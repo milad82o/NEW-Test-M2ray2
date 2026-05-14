@@ -36,10 +36,16 @@ def main():
     inbound = {
         'tag': 'vless-in',
         'port': int(PORT),
+        'listen': '0.0.0.0',
         'protocol': 'vless',
         'settings': {
-            'clients': [{'id': UUID, 'flow': ''}],
+            'clients': [{'id': UUID, 'flow': '', 'level': 0}],
             'decryption': 'none'
+        },
+        'sniffing': {
+            'enabled': True,
+            'destOverride': ['http', 'tls', 'quic'],
+            'routeOnly': False
         }
     }
 
@@ -57,7 +63,12 @@ def main():
         grpc = {'serviceName': GRPC_SVC, 'multiMode': GRPC_MULTI}
         stream['grpcSettings'] = grpc
     else:
-        stream['xhttpSettings'] = {'mode': MODE, 'path': PATH_VAL}
+        stream['xhttpSettings'] = {
+            'mode': MODE,
+            'path': PATH_VAL,
+            'maxUploadSize': 1000000,
+            'maxConcurrentUploads': 10
+        }
 
     if TLS:
         stream['security'] = 'tls'
@@ -74,17 +85,53 @@ def main():
             stream['tlsSettings'] = {'serverNames': [SNI]}
             if FP:
                 stream['tlsSettings']['fingerprint'] = FP
+    else:
+        stream['security'] = 'none'
 
     inbound['streamSettings'] = stream
 
     config = {
-        'log': {'loglevel': 'warning'},
+        'log': {'loglevel': 'warning', 'access': 'none', 'error': '/tmp/xray-error.log'},
+        'dns': {
+            'servers': [
+                {
+                    'address': 'https://1.1.1.1/dns-query',
+                    'domains': ['geosite:geolocation-!cn'],
+                    'queryStrategy': 'UseIP'
+                },
+                '8.8.8.8',
+                'localhost'
+            ],
+            'queryStrategy': 'UseIPv4'
+        },
         'inbounds': [inbound],
-        'outbounds': [{'tag': 'direct', 'protocol': 'freedom', 'settings': {}}]
+        'outbounds': [
+            {'tag': 'direct', 'protocol': 'freedom', 'settings': {'domainStrategy': 'UseIPv4'}},
+            {'tag': 'block', 'protocol': 'blackhole', 'settings': {'response': {'type': 'http'}}}
+        ],
+        'routing': {
+            'domainStrategy': 'IPIfNonMatch',
+            'rules': [
+                {'type': 'field', 'ip': ['geoip:private'], 'outboundTag': 'block'},
+                {'type': 'field', 'protocol': ['bittorrent'], 'outboundTag': 'block'},
+                {'type': 'field', 'domain': ['geosite:category-ads-all'], 'outboundTag': 'block'}
+            ]
+        },
+        'policy': {
+            'levels': {
+                '0': {
+                    'handshake': 4,
+                    'connIdle': 300,
+                    'uplinkOnly': 2,
+                    'downlinkOnly': 5,
+                    'bufferSize': 512
+                }
+            }
+        }
     }
 
     if FRAG:
-        config['outbounds'].insert(0, {
+        config['outbounds'].append({
             'tag': 'fragment-out',
             'protocol': 'freedom',
             'settings': {
@@ -95,7 +142,7 @@ def main():
                 }
             }
         })
-        config['outbounds'].insert(0, {
+        config['outbounds'].append({
             'tag': 'proxy-out',
             'protocol': 'vless',
             'settings': {
@@ -109,7 +156,7 @@ def main():
         })
 
     if NOISE:
-        config['outbounds'].insert(0, {
+        config['outbounds'].append({
             'tag': 'noise-out',
             'protocol': 'noise',
             'settings': [{'type': 'udp', 'packet': NOISE_PKT, 'source': NOISE_SRC}]

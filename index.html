@@ -405,7 +405,7 @@ footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: cente
 <div class="container">
   <h2 class="section-title">Setup Guides</h2>
   <p class="section-sub">Step-by-step instructions for deploying your g2ray proxy.</p>
-  <div class="guide-section">
+   <div class="guide-section">
     <h3>Quick Start</h3>
     <p>Deploy your g2ray proxy using GitHub Codespaces.</p>
     <ol style="list-style:none;counter-reset:step">
@@ -423,24 +423,40 @@ footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: cente
       </li>
       <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
         <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">4</span>
-        Copy the VLESS link from terminal
+        Copy the VLESS link from terminal or use show-link.sh
       </li>
     </ol>
+  </div>
+  <div class="guide-section">
+    <h3>Files in .devcontainer/</h3>
+    <p>config.json — Xray config: VLESS + xHTTP + TLS + sniffing + routing + DNS</p>
+    <p>setup.sh — Downloads Xray + GeoIP + GeoSite</p>
+    <p>Dockerfile — Container build (base: debian:bookworm-slim)</p>
+    <p>devcontainer.json — Codespace settings: port 443 public, CLI features</p>
+    <p>show-link.sh — Prints VLESS link (reads UUID from config)</p>
+    <p>start.sh — Runs Xray in tmux session</p>
   </div>
   <div class="guide-section">
     <h3>SNI Format</h3>
     <p>GitHub port-forwarder issues TLS certs for:</p>
     <div class="guide-code">&lt;codespace-name&gt;-&lt;port&gt;.app.github.dev</div>
-    <p>Example: codespace named g2ray-main-abc123, port 443:</p>
-    <div class="guide-code">g2ray-main-abc123-443.app.github.dev</div>
   </div>
   <div class="guide-section">
-    <h3>Import into Client</h3>
-    <p>Copy the VLESS link into V2RayNG (Android), Clash Meta, or Nekoray (Desktop).</p>
+    <h3>Show Link</h3>
+    <p>If the link isn't shown in the terminal:</p>
+    <div class="guide-code">show-link.sh</div>
+    <p>Or extract manually:</p>
+    <div class="guide-code">UUID=$(grep -o '"id": *"[^"]*"' /etc/xray/g2ray.json | head -1 | grep -o '"[^"]*"$' | tr -d '"')
+echo "vless://${UUID}@94.130.50.12:443?..."</div>
   </div>
   <div class="guide-section">
     <h3>Troubleshooting</h3>
-    <div class="guide-code">Connection times out &rarr; try ws/h2/grpc transport + fragment\nSlow speeds &rarr; use xhttp-go mode\nTLS error &rarr; verify SNI matches codespace name\nQuota used &rarr; stop codespace when not in use</div>
+    <p>Connection times out &rarr; try ws/h2/grpc transport + fragment</p>
+    <p>Slow speeds &rarr; use xhttp-go mode</p>
+    <p>TLS error &rarr; verify SNI matches codespace name</p>
+    <p>Quota used &rarr; stop codespace when not in use</p>
+    <p>Idle timeout &rarr; set github.com/settings/codespaces &rarr; 240 min</p>
+    <p>Start Xray manually &rarr; bash /usr/local/bin/start.sh</p>
   </div>
 </div>
 </div>
@@ -519,6 +535,8 @@ function generateConfig() {
     params.noise = JSON.stringify([{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value }]);
   }
   if (tls) {
+    params.host = sni;
+    params.fp = fp || 'chrome';
     params.insecure = '1';
     params.allowInsecure = '1';
   }
@@ -543,7 +561,7 @@ function generateJson(uuid, name, port, host, tls, sni, fp, reality) {
   const network = currentNetwork;
   let stream = {};
   if (network === 'xhttp') {
-    stream.xhttpSettings = { mode: document.getElementById('cfgMode').value, path: document.getElementById('cfgPath').value.trim() || '/' };
+    stream.xhttpSettings = { mode: document.getElementById('cfgMode').value, path: document.getElementById('cfgPath').value.trim() || '/', maxUploadSize: 1000000, maxConcurrentUploads: 10 };
     const extra = document.getElementById('cfgExtra').value.trim();
     if (extra) { try { stream.xhttpSettings.extra = JSON.parse(extra); } catch(e) {} }
   } else if (network === 'ws') {
@@ -564,9 +582,36 @@ function generateJson(uuid, name, port, host, tls, sni, fp, reality) {
       stream.tlsSettings = { serverNames: [sni] };
       if (fp) stream.tlsSettings.fingerprint = fp;
     }
+  } else {
+    stream.security = 'none';
   }
-  const inbound = { tag: 'vless-in', port: parseInt(port), protocol: 'vless', settings: { clients: [{ id: uuid, flow: '' }], decryption: 'none' }, streamSettings: stream };
-  const config = { log: { loglevel: 'warning' }, inbounds: [inbound], outbounds: [{ tag: 'direct', protocol: 'freedom', settings: {} }] };
+  const inbound = {
+    tag: 'vless-in', port: parseInt(port), listen: '0.0.0.0', protocol: 'vless',
+    settings: { clients: [{ id: uuid, flow: '', level: 0 }], decryption: 'none' },
+    sniffing: { enabled: true, destOverride: ['http','tls','quic'], routeOnly: false },
+    streamSettings: stream
+  };
+  const config = {
+    log: { loglevel: 'warning', access: 'none', error: '/tmp/xray-error.log' },
+    dns: {
+      servers: [{ address: 'https://1.1.1.1/dns-query', domains: ['geosite:geolocation-!cn'], queryStrategy: 'UseIP' }, '8.8.8.8', 'localhost'],
+      queryStrategy: 'UseIPv4'
+    },
+    inbounds: [inbound],
+    outbounds: [
+      { tag: 'direct', protocol: 'freedom', settings: { domainStrategy: 'UseIPv4' } },
+      { tag: 'block', protocol: 'blackhole', settings: { response: { type: 'http' } } }
+    ],
+    routing: {
+      domainStrategy: 'IPIfNonMatch',
+      rules: [
+        { type: 'field', ip: ['geoip:private'], outboundTag: 'block' },
+        { type: 'field', protocol: ['bittorrent'], outboundTag: 'block' },
+        { type: 'field', domain: ['geosite:category-ads-all'], outboundTag: 'block' }
+      ]
+    },
+    policy: { levels: { '0': { handshake: 4, connIdle: 300, uplinkOnly: 2, downlinkOnly: 5, bufferSize: 512 } } }
+  };
   if (document.getElementById('cfgFrag').checked) {
     config.outbounds.push({ tag: 'fragment-out', protocol: 'freedom', settings: { fragment: { packets: 'tlshello', length: document.getElementById('cfgFragLen').value.trim() || '100-200', interval: { min: document.getElementById('cfgFragInt').value.trim().split('-')[0] || '10', max: document.getElementById('cfgFragInt').value.trim().split('-')[1] || '20' } } } });
     config.outbounds.push({ tag: 'proxy-out', protocol: 'vless', settings: { vnext: [{ address: host, port: parseInt(port), users: [{ id: uuid, encryption: 'none' }] }] }, streamSettings: stream });

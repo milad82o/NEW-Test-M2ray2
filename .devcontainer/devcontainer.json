@@ -12,11 +12,7 @@
       "version": "latest"
     }
   },
-  "postCreateCommand": "nohup python3 -m http.server 3000 > /dev/null 2>&1 &",
-  "postAttachCommand": {
-    "expose": "gh codespace ports visibility 443:public -c $CODESPACE_NAME",
-    "start": "bash /home/sarcheshmeh/g2ray/.devcontainer/startup.sh"
-  },
+  "postAttachCommand": "gh codespace ports visibility 443:public -c $CODESPACE_NAME && bash /usr/local/bin/startup.sh",
   "portsAttributes": {
     "443": {
       "label": "g2ray",

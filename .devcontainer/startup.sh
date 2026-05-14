@@ -5,7 +5,7 @@ PORT="${G2RAY_PORT:-443}"
 NETWORK="${G2RAY_NETWORK:-xhttp}"
 PATH_VAL="${G2RAY_PATH:-/}"
 CODESPACE="${CODESPACE_NAME:-g2ray}"
-SNI="${CODESPACE}-${PORT}.app.github.dev"
+SNI="${G2RAY_SNI:-${CODESPACE}-${PORT}.app.github.dev}"
 TLS="${G2RAY_TLS:-true}"
 MODE="${G2RAY_MODE:-packet-up}"
 FRAG="${G2RAY_FRAGMENT:-false}"
@@ -41,7 +41,7 @@ echo "Reality: $REALITY"
 echo "Codespace: $CODESPACE"
 echo ""
 
-python3 /app/generate_config.py
+python3 /home/sarcheshmeh/g2ray/.devcontainer/generate_config.py
 
 echo ""
 echo "======================================"

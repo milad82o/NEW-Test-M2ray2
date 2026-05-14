@@ -12,5 +12,6 @@ RUN chmod +x /app/install.sh && /app/install.sh
 
 COPY config-template.json /app/config-template.json
 COPY generate_config.py /app/generate_config.py
+COPY startup.sh /app/startup.sh
 
 CMD ["bash", "/app/startup.sh"]

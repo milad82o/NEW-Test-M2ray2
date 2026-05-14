@@ -28,7 +28,7 @@ NOISE_PKT="${G2RAY_NOISE_PKT:-d200}"
 NOISE_SRC="${G2RAY_NOISE_SRC:-}"
 
 echo "======================================"
-echo "g2ray - VLESS Proxy on Codespaces"
+echo "G2Ray - VLESS Proxy on Codespaces"
 echo "======================================"
 echo ""
 echo "UUID: $UUID"
@@ -41,11 +41,11 @@ echo "Reality: $REALITY"
 echo "Codespace: $CODESPACE"
 echo ""
 
-python3 /app/generate_config.py
+python3 /home/sarcheshmeh/g2ray/.devcontainer/generate_config.py
 
 echo ""
 echo "======================================"
-echo "Connection string:"
+echo "VLESS Connection Link:"
 echo "======================================"
 
 SECURITY="none"
@@ -57,14 +57,14 @@ if [ "$TLS" = "true" ]; then
     fi
 fi
 
-echo "vless://${UUID}@${HOST_IP}:${PORT}?encryption=none&type=${NETWORK}&security=${SECURITY}&sni=${SNI}#g2ray-${CODESPACE}"
+echo "vless://${UUID}@${HOST_IP}:${PORT}?encryption=none&type=${NETWORK}&security=${SECURITY}&sni=${SNI}#G2Ray-${CODESPACE}"
 echo ""
 echo "======================================"
-echo "Web UI:"
+echo "Web Configurator:"
 echo "======================================"
 echo "http://${CODESPACE}-3000.app.github.dev"
 echo ""
 echo "Start Xray..."
 echo ""
 
-exec /usr/local/bin/xray -c /etc/xray/g2ray.json
+exec /usr/local/bin/xray -c /etc/g2ray-generated.json

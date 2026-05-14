@@ -33,19 +33,16 @@ def main():
     NOISE_PKT = get_env('G2RAY_NOISE_PKT', 'd200')
     NOISE_SRC = get_env('G2RAY_NOISE_SRC', '')
 
-    config = {
-        'log': {'loglevel': 'warning'},
-        'inbounds': [{
-            'port': int(PORT),
-            'protocol': 'vless',
-            'settings': {
-                'clients': [{'id': UUID}],
-                'decryption': 'none'
-            }
-        }]
+    inbound = {
+        'tag': 'vless-in',
+        'port': int(PORT),
+        'protocol': 'vless',
+        'settings': {
+            'clients': [{'id': UUID, 'flow': ''}],
+            'decryption': 'none'
+        }
     }
 
-    inbound = config['inbounds'][0]
     stream = {}
 
     if NETWORK == 'ws':
@@ -65,9 +62,7 @@ def main():
     if TLS:
         stream['security'] = 'tls'
         if REALITY:
-            stream['tlsSettings'] = {
-                'serverNames': [SNI]
-            }
+            stream['tlsSettings'] = {'serverNames': [SNI]}
             stream['realitySettings'] = {
                 'publicKey': REALITY_PK,
                 'shortId': REALITY_SID,
@@ -76,18 +71,32 @@ def main():
             if FP:
                 stream['realitySettings']['fingerprint'] = FP
         else:
-            stream['tlsSettings'] = {
-                'serverNames': [SNI]
-            }
+            stream['tlsSettings'] = {'serverNames': [SNI]}
             if FP:
                 stream['tlsSettings']['fingerprint'] = FP
 
     inbound['streamSettings'] = stream
 
-    outbounds = [{'protocol': 'freedom', 'settings': {}}]
+    config = {
+        'log': {'loglevel': 'warning'},
+        'inbounds': [inbound],
+        'outbounds': [{'tag': 'direct', 'protocol': 'freedom', 'settings': {}}]
+    }
 
     if FRAG:
-        outbounds.insert(0, {
+        config['outbounds'].insert(0, {
+            'tag': 'fragment-out',
+            'protocol': 'freedom',
+            'settings': {
+                'fragment': {
+                    'packets': 'tlshello',
+                    'length': FRAG_LEN,
+                    'interval': {'min': FRAG_INT.split('-')[0], 'max': FRAG_INT.split('-')[1]}
+                }
+            }
+        })
+        config['outbounds'].insert(0, {
+            'tag': 'proxy-out',
             'protocol': 'vless',
             'settings': {
                 'vnext': [{
@@ -96,34 +105,21 @@ def main():
                     'users': [{'id': UUID, 'encryption': 'none'}]
                 }]
             },
-            'streamSettings': stream,
-            'tag': 'proxy'
-        })
-        outbounds.insert(0, {
-            'protocol': 'freedom',
-            'settings': {
-                'fragment': {
-                    'packets': 'tlshello',
-                    'length': FRAG_LEN,
-                    'interval': {'min': FRAG_INT.split('-')[0], 'max': FRAG_INT.split('-')[1]}
-                }
-            },
-            'tag': 'fragment'
+            'streamSettings': stream
         })
 
     if NOISE:
-        outbounds.insert(0, {
+        config['outbounds'].insert(0, {
+            'tag': 'noise-out',
             'protocol': 'noise',
-            'settings': [{'type': 'udp', 'packet': NOISE_PKT, 'source': NOISE_SRC}],
-            'tag': 'noise'
+            'settings': [{'type': 'udp', 'packet': NOISE_PKT, 'source': NOISE_SRC}]
         })
 
-    config['outbounds'] = outbounds
-
-    with open('/etc/g2ray-generated.json', 'w') as f:
+    os.makedirs('/etc/xray', exist_ok=True)
+    with open('/etc/xray/g2ray.json', 'w') as f:
         json.dump(config, f, indent=2)
 
-    print('Config written to /etc/g2ray-generated.json')
+    print('Config written to /etc/xray/g2ray.json')
 
 if __name__ == '__main__':
     main()

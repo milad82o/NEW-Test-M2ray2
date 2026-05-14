@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>G2Ray Configurator</title>
+<title>g2ray Configurator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link href="https://unpkg.com/lucide-static@latest/font/lucide.css" rel="stylesheet">
 <style>
 :root {
   --bg: #0f0f11;
@@ -24,11 +23,7 @@
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', system-ui, sans-serif;
 }
-
 * { margin:0; padding:0; box-sizing:border-box; }
-
-html { scroll-behavior: smooth; }
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -38,921 +33,442 @@ body {
   text-wrap: pretty;
   min-height: 100vh;
 }
-
 a { color: var(--accent-bright); text-decoration: none; }
 a:hover { color: var(--accent); text-decoration: underline; }
-
-::selection { background: var(--accent); color: #fff; }
-
 :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
-
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-
-/* Skip link */
-.skip-link {
-  position: absolute; top: -100%; left: 0;
-  background: var(--accent); color: #fff; padding: 8px 16px; z-index: 1000;
-}
-.skip-link:focus { top: 0; }
-
-/* Nav */
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(15,15,17,0.85); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-nav .container {
-  display: flex; align-items: center; justify-content: space-between;
-  height: 60px;
-}
-.nav-brand {
-  font-family: var(--font-display); font-size: 1.4rem; font-weight: 800;
-  color: var(--text); letter-spacing: -0.5px;
-}
-.nav-brand span { color: var(--accent-bright); }
-.nav-links { display: flex; gap: 8px; list-style: none; }
-.nav-links a {
-  color: var(--text-dim); padding: 8px 16px; border-radius: 6px;
-  font-size: 0.9rem; font-weight: 500; transition: all 0.15s;
-}
-.nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--surface2); }
-.nav-links a.active { color: var(--accent-bright); }
-
-.nav-ctrlk {
-  display: flex; align-items: center; gap: 8px;
-  color: var(--text-dim); font-size: 0.8rem;
-}
-.nav-ctrlk kbd {
-  background: var(--surface2); border: 1px solid var(--border);
-  padding: 2px 8px; border-radius: 4px; font-family: var(--font-body);
-  font-size: 0.75rem; color: var(--text-dim);
-}
-
-/* Page sections */
 .page { display: none; padding: 48px 0; }
 .page.active { display: block; }
-
-/* Hero */
-.hero {
-  padding: 80px 0 60px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
-}
+.hero { padding: 60px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
 .hero h1 {
   font-family: var(--font-display);
-  font-size: 3.5rem; font-weight: 800;
+  font-size: 2.8rem; font-weight: 800;
   line-height: 1.1; letter-spacing: -1.5px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 .hero h1 span { color: var(--accent-bright); }
-.hero p {
-  font-size: 1.15rem; color: var(--text-dim);
-  max-width: 600px; line-height: 1.7;
-  text-wrap: balance;
-}
-
-/* Cards grid */
-.cards-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 20px; margin: 40px 0;
-}
+.hero p { font-size: 1.1rem; color: var(--text-dim); max-width: 550px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
 .card {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 28px;
-  transition: all 0.2s;
+  border-radius: 10px; padding: 24px; transition: all 0.2s;
 }
-.card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.card-icon {
-  width: 40px; height: 40px; border-radius: 8px;
-  background: var(--accent-glow); display: flex;
-  align-items: center; justify-content: center;
-  margin-bottom: 16px; font-size: 1.2rem;
-}
-.card h3 {
-  font-size: 1.05rem; font-weight: 600; margin-bottom: 8px;
-}
-.card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
-
-/* Section titles */
+.card:hover { border-color: var(--accent); }
+.card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.card p { color: var(--text-dim); font-size: 0.85rem; }
 .section-title {
-  font-family: var(--font-display);
-  font-size: 1.8rem; font-weight: 700; margin-bottom: 8px;
+  font-family: var(--font-display); font-size: 1.5rem;
+  font-weight: 700; margin-bottom: 6px;
 }
-.section-sub { color: var(--text-dim); margin-bottom: 32px; font-size: 1rem; }
-
-/* Form */
-.config-page { padding: 48px 0; }
-
-.config-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-}
+.section-sub { color: var(--text-dim); margin-bottom: 24px; font-size: 0.95rem; }
+.config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .config-panel {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; overflow: hidden;
+  border-radius: 10px; overflow: hidden; margin-bottom: 20px;
 }
 .config-panel-header {
-  padding: 20px 24px; border-bottom: 1px solid var(--border);
-  font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
+  padding: 16px 20px; border-bottom: 1px solid var(--border);
+  font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
 }
-.config-panel-body { padding: 24px; }
-
-.form-group { margin-bottom: 20px; }
-.form-group:last-child { margin-bottom: 0; }
+.config-panel-body { padding: 20px; }
+.form-group { margin-bottom: 16px; }
 .form-label {
-  display: block; font-size: 0.85rem; font-weight: 500;
-  color: var(--text-dim); margin-bottom: 6px;
+  display: block; font-size: 0.82rem; font-weight: 500;
+  color: var(--text-dim); margin-bottom: 5px;
 }
 .form-input, .form-select {
   width: 100%; background: var(--bg); border: 1px solid var(--border);
-  color: var(--text); padding: 10px 14px; border-radius: 6px;
-  font-size: 0.9rem; font-family: var(--font-body);
-  transition: border-color 0.15s;
+  color: var(--text); padding: 9px 12px; border-radius: 6px;
+  font-size: 0.88rem; font-family: var(--font-body); transition: border-color 0.15s;
 }
-.form-input:focus, .form-select:focus {
-  border-color: var(--accent); outline: none;
-}
-.form-input::placeholder { color: var(--text-dim); opacity: 0.5; }
-
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-.form-toggle {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 20px;
-}
-.form-toggle input[type="checkbox"] {
-  width: 18px; height: 18px; accent-color: var(--accent);
-  cursor: pointer;
-}
-.form-toggle label {
-  font-size: 0.9rem; font-weight: 500; cursor: pointer;
-  user-select: none;
-}
-
+.form-input:focus, .form-select:focus { border-color: var(--accent); outline: none; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 20px; border-radius: 6px; font-size: 0.9rem;
-  font-weight: 600; font-family: var(--font-body); border: none;
-  cursor: pointer; transition: all 0.15s;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px; border-radius: 6px; font-size: 0.88rem;
+  font-weight: 600; font-family: var(--font-body); border: none; cursor: pointer; transition: all 0.15s;
 }
-.btn-primary {
-  background: var(--accent); color: #fff;
-}
+.btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent-bright); }
-.btn-secondary {
-  background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border);
-}
+.btn-secondary { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
 .btn-secondary:hover { color: var(--text); border-color: var(--text-dim); }
-.btn-danger { background: var(--danger); color: #fff; }
-.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
-
-.btn-group { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
-
-/* Output */
+.btn-sm { padding: 5px 10px; font-size: 0.8rem; }
+.btn-group { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
 .output-box {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; padding: 16px; font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 0.82rem; line-height: 1.6; word-break: break-all;
-  max-height: 200px; overflow-y: auto; color: var(--text-dim);
-  white-space: pre-wrap;
-}
-
-.output-link-box {
-  background: var(--bg); border: 1px solid var(--accent);
-  border-radius: 8px; padding: 16px; position: relative;
+  border-radius: 8px; padding: 14px; font-family: 'SF Mono', monospace;
+  font-size: 0.8rem; line-height: 1.5; word-break: break-all;
+  max-height: 180px; overflow-y: auto; color: var(--text-dim); white-space: pre-wrap;
 }
 .output-link {
-  font-family: 'SF Mono', 'Fira Code', monospace;
-  font-size: 0.8rem; color: var(--accent-bright); word-break: break-all;
-  line-height: 1.5;
+  font-family: 'SF Mono', monospace; font-size: 0.78rem;
+  color: var(--accent-bright); word-break: break-all; line-height: 1.4;
 }
-
 .qr-container {
-  display: flex; justify-content: center; padding: 24px;
-  background: #fff; border-radius: 8px; margin-top: 16px;
+  display: flex; justify-content: center; padding: 20px;
+  background: #fff; border-radius: 8px; margin-top: 12px;
 }
-.qr-container img { max-width: 200px; max-height: 200px; }
-
-/* Protocol tabs */
+.qr-container img { max-width: 180px; max-height: 180px; }
 .protocol-tabs {
-  display: flex; gap: 4px; background: var(--bg);
-  border-radius: 6px; padding: 4px; margin-bottom: 20px;
+  display: flex; gap: 3px; background: var(--bg);
+  border-radius: 5px; padding: 3px; margin-bottom: 16px;
 }
 .protocol-tab {
-  padding: 8px 16px; border-radius: 4px; font-size: 0.82rem;
+  padding: 7px 14px; border-radius: 4px; font-size: 0.8rem;
   font-weight: 500; color: var(--text-dim); background: transparent;
-  border: none; cursor: pointer; transition: all 0.15s;
-  font-family: var(--font-body);
+  border: none; cursor: pointer; transition: all 0.15s; font-family: var(--font-body);
 }
 .protocol-tab.active { background: var(--accent); color: #fff; }
 .protocol-tab:hover:not(.active) { color: var(--text); }
-
-/* Guide */
-.guide-section {
-  border-bottom: 1px solid var(--border); padding: 32px 0;
-}
-.guide-section h3 {
-  font-family: var(--font-display); font-size: 1.3rem;
-  font-weight: 700; margin-bottom: 12px;
-}
-.guide-section p { color: var(--text-dim); margin-bottom: 12px; }
-.guide-steps {
-  list-style: none; counter-reset: step; margin-bottom: 16px;
-}
-.guide-steps li {
-  counter-increment: step; padding: 10px 0 10px 40px;
-  position: relative; color: var(--text-dim);
-}
-.guide-steps li::before {
-  content: counter(step); position: absolute; left: 0; top: 10px;
-  width: 26px; height: 26px; border-radius: 6px;
-  background: var(--accent-glow); color: var(--accent-bright);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.8rem; font-weight: 600;
-}
+.guide-section { border-bottom: 1px solid var(--border); padding: 24px 0; }
+.guide-section h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
+.guide-section p { color: var(--text-dim); margin-bottom: 10px; }
 .guide-code {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: 6px; padding: 14px 18px; font-family: 'SF Mono', monospace;
-  font-size: 0.82rem; color: var(--accent-bright); overflow-x: auto;
-  margin: 12px 0;
+  border-radius: 6px; padding: 12px 16px; font-family: 'SF Mono', monospace;
+  font-size: 0.8rem; color: var(--accent-bright); overflow-x: auto; margin: 10px 0;
 }
-
-/* Footer */
-footer {
-  border-top: 1px solid var(--border); padding: 32px 0;
-  text-align: center; color: var(--text-dim); font-size: 0.85rem;
-}
-
-/* Responsive */
+footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-dim); font-size: 0.82rem; }
 @media (max-width: 768px) {
-  .hero h1 { font-size: 2.2rem; }
-  .cards-grid { grid-template-columns: 1fr; }
+  .hero h1 { font-size: 2rem; }
+  .grid { grid-template-columns: 1fr; }
   .config-grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
-  .nav-links a { padding: 8px 10px; font-size: 0.82rem; }
-  .nav-ctrlk { display: none; }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-}
-
-/* Modal */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-  align-items: center; justify-content: center;
-}
-.modal-overlay.active { display: flex; }
-.modal {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 12px; width: 90%; max-width: 480px;
-  max-height: 80vh; overflow-y: auto;
-}
-.modal-header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 20px 24px; border-bottom: 1px solid var(--border);
-}
-.modal-header h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
-.modal-close {
-  background: none; border: none; color: var(--text-dim);
-  cursor: pointer; font-size: 1.2rem; padding: 4px;
-}
-.modal-body { padding: 24px; }
-
-/* Copy notification */
+@media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; } }
 .toast {
-  position: fixed; bottom: 24px; right: 24px; z-index: 300;
-  background: var(--success); color: #fff; padding: 12px 20px;
-  border-radius: 8px; font-size: 0.9rem; font-weight: 500;
-  transform: translateY(100px); opacity: 0; transition: all 0.2s;
+  position: fixed; bottom: 20px; right: 20px; z-index: 300;
+  background: var(--success); color: #fff; padding: 10px 18px;
+  border-radius: 8px; font-size: 0.88rem; font-weight: 500;
+  transform: translateY(80px); opacity: 0; transition: all 0.2s;
 }
 .toast.show { transform: translateY(0); opacity: 1; }
-
-/* Color picker row */
-.color-row { display: flex; gap: 10px; align-items: center; }
-.color-row input[type="color"] {
-  width: 40px; height: 34px; border: 1px solid var(--border);
-  border-radius: 4px; background: var(--bg); cursor: pointer;
-  padding: 2px;
-}
-
-.hidden { display: none; }
-
-/* Export configs table */
-.config-list { margin: 20px 0; }
 .config-item {
   background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; padding: 16px; margin-bottom: 12px;
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  border-radius: 8px; padding: 12px; margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center; gap: 10px;
 }
 .config-item-info { flex: 1; min-width: 0; }
-.config-item-name { font-weight: 600; font-size: 0.9rem; }
-.config-item-meta { font-size: 0.8rem; color: var(--text-dim); margin-top: 2px; }
-.config-item-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-/* Accordion */
-.accordion-item {
-  border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden;
-}
-.accordion-header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 18px; background: var(--surface); cursor: pointer;
-  font-weight: 600; font-size: 0.95rem; user-select: none;
-}
-.accordion-header:hover { background: var(--surface2); }
-.accordion-body {
-  padding: 0 18px; max-height: 0; overflow: hidden;
-  transition: all 0.2s; color: var(--text-dim);
-}
-.accordion-item.open .accordion-body { padding: 18px; max-height: 1000px; }
-.accordion-item.open .accordion-arrow { transform: rotate(180deg); }
-.accordion-arrow { transition: transform 0.2s; }
+.config-item-name { font-weight: 600; font-size: 0.88rem; }
+.config-item-meta { font-size: 0.78rem; color: var(--text-dim); margin-top: 1px; }
+.config-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
+.hidden { display: none; }
 </style>
 </head>
 <body>
 
-<a href="#main" class="skip-link">Skip to content</a>
+<nav style="position:sticky;top:0;z-index:100;background:rgba(15,15,17,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)">
+<div class="container" style="display:flex;align-items:center;justify-content:space-between;height:52px">
+  <a href="#" style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text)" onclick="showPage('home')">g2<span style="color:var(--accent-bright)">ray</span></a>
+  <ul style="display:flex;gap:6px;list-style:none">
+    <li><a href="#" style="color:var(--text-dim);padding:7px 14px;border-radius:5px;font-size:0.85rem;font-weight:500" onclick="showPage('home')" class="active" data-page="home">Home</a></li>
+    <li><a href="#" style="color:var(--text-dim);padding:7px 14px;border-radius:5px;font-size:0.85rem;font-weight:500" onclick="showPage('config')" data-page="config">Config</a></li>
+    <li><a href="#" style="color:var(--text-dim);padding:7px 14px;border-radius:5px;font-size:0.85rem;font-weight:500" onclick="showPage('guides')" data-page="guides">Guides</a></li>
+  </ul>
+</div>
+</nav>
 
-<!-- Command Palette -->
-<div class="modal-overlay" id="cmdPalette">
-  <div class="modal" style="max-width:420px">
-    <div class="modal-header">
-      <h3>Quick Navigate</h3>
-      <button class="modal-close" onclick="toggleCmdPalette()">Esc</button>
+<main>
+<!-- HOME -->
+<div class="page active" id="page-home">
+<div class="container">
+  <div class="hero">
+    <h1>Build Your <span>g2ray</span> Proxy</h1>
+    <p>Full-featured VLESS proxy configurator for GitHub Codespaces. Customize every parameter, generate connection links, deploy.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Full Customization</h3><p>UUID, port, network type, path, SNI, TLS, fragment, noise -- every parameter adjustable.</p></div>
+    <div class="card"><h3>Multi-Protocol</h3><p>XHTTP, WebSocket, HTTP/2, gRPC -- pick the transport that works for your network.</p></div>
+    <div class="card"><h3>One-Click Export</h3><p>Copy links, generate QR codes, download configs. Share with a single click.</p></div>
+  </div>
+  <h2 class="section-title">Supported Protocols</h2>
+  <p class="section-sub">All protocols run over port 443 with TLS.</p>
+  <div class="grid">
+    <div class="card"><h3>VLESS + XHTTP</h3><p>Default transport. Fastest, lowest overhead.</p></div>
+    <div class="card"><h3>VLESS + WebSocket</h3><p>Hides as regular WebSocket traffic.</p></div>
+    <div class="card"><h3>VLESS + HTTP/2</h3><p>HTTP/2 multiplexing.</p></div>
+    <div class="card"><h3>VLESS + gRPC</h3><p>gRPC transport. Resists DNS blocking.</p></div>
+    <div class="card"><h3>Fragment</h3><p>Breaks TLS records into fragments. Evades SNI blocking.</p></div>
+    <div class="card"><h3>Noise (XUDP)</h3><p>UDP noise packets mask traffic fingerprint.</p></div>
+  </div>
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="showPage('config')">Create Config</button>
+    <a href="https://github.com/amircloner/g2ray" target="_blank" class="btn btn-secondary" rel="noopener">View Original</a>
+  </div>
+</div>
+</div>
+
+<!-- CONFIG -->
+<div class="page" id="page-config">
+<div class="container">
+  <h2 class="section-title">Configuration</h2>
+  <p class="section-sub">Tune every parameter. VLESS link generates live.</p>
+  <div class="config-grid">
+    <div>
+      <div class="config-panel">
+        <div class="config-panel-header">Basic</div>
+        <div class="config-panel-body">
+          <div class="form-group">
+            <label class="form-label">Client Name</label>
+            <input type="text" class="form-input" id="cfgName" placeholder="g2ray-proxy" value="g2ray-proxy">
+          </div>
+          <div class="form-group">
+            <label class="form-label">UUID</label>
+            <div style="display:flex;gap:8px">
+              <input type="text" class="form-input" id="cfgUuid" value="">
+              <button class="btn btn-secondary btn-sm" onclick="generateUuid()">Generate</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Port</label>
+              <select class="form-select" id="cfgPort">
+                <option value="443">443 (HTTPS)</option>
+                <option value="8443">8443</option>
+                <option value="2053">2053</option>
+                <option value="2083">2083</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Server IP / Host</label>
+              <input type="text" class="form-input" id="cfgHost" placeholder="94.130.50.12" value="94.130.50.12">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">Network Transport</div>
+        <div class="config-panel-body">
+          <div class="protocol-tabs" id="netTabs">
+            <button class="protocol-tab active" data-net="xhttp" onclick="setNetwork('xhttp')">XHTTP</button>
+            <button class="protocol-tab" data-net="ws" onclick="setNetwork('ws')">WebSocket</button>
+            <button class="protocol-tab" data-net="h2" onclick="setNetwork('h2')">HTTP/2</button>
+            <button class="protocol-tab" data-net="grpc" onclick="setNetwork('grpc')">gRPC</button>
+          </div>
+          <div id="field-xhttp">
+            <div class="form-group">
+              <label class="form-label">Path</label>
+              <input type="text" class="form-input" id="cfgPath" value="/">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mode</label>
+              <select class="form-select" id="cfgMode">
+                <option value="packet-up">packet-up</option>
+                <option value="xhttp-go">xhttp-go</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Extra (JSON)</label>
+              <textarea class="form-input" id="cfgExtra" rows="3" placeholder='{"padding":[{"bytes":"2048"}]}' style="resize:vertical"></textarea>
+            </div>
+          </div>
+          <div id="field-ws" class="hidden">
+            <div class="form-group"><label class="form-label">Path</label><input type="text" class="form-input" id="cfgWsPath" value="/"></div>
+            <div class="form-group"><label class="form-label">Host Header</label><input type="text" class="form-input" id="cfgWsHost" value="example.com"></div>
+            <div class="form-group">
+              <label class="form-toggle"><input type="checkbox" id="cfgWsEarly" checked> Enable Early Data</label>
+            </div>
+          </div>
+          <div id="field-h2" class="hidden">
+            <div class="form-group"><label class="form-label">Host</label><input type="text" class="form-input" id="cfgH2Host" value="example.com"></div>
+            <div class="form-group"><label class="form-label">Path</label><input type="text" class="form-input" id="cfgH2Path" value="/"></div>
+          </div>
+          <div id="field-grpc" class="hidden">
+            <div class="form-group"><label class="form-label">Service Name</label><input type="text" class="form-input" id="cfgGrpcSvc" value="test"></div>
+            <div class="form-group"><label class="form-toggle"><input type="checkbox" id="cfgGrpcMulti"> Multi-mode</label></div>
+          </div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">Security</div>
+        <div class="config-panel-body">
+          <div class="form-group">
+            <label class="form-toggle"><input type="checkbox" id="cfgTls" checked> TLS Enabled</label>
+          </div>
+          <div class="form-group">
+            <label class="form-label">SNI</label>
+            <input type="text" class="form-input" id="cfgSni" placeholder="codespace-443.app.github.dev" value="">
+            <span style="font-size:0.72rem;color:var(--text-dim);margin-top:3px;display:block">Format: &lt;codespace-name&gt;-&lt;port&gt;.app.github.dev</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fingerprint</label>
+            <select class="form-select" id="cfgFp">
+              <option value="chrome">chrome</option>
+              <option value="firefox">firefox</option>
+              <option value="safari">safari</option>
+              <option value="ios">ios</option>
+              <option value="edge">edge</option>
+              <option value="360">360</option>
+              <option value="qq">qq</option>
+              <option value="random">random</option>
+              <option value="randomized">randomized</option>
+              <option value="">none</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-toggle"><input type="checkbox" id="cfgReality"> REALITY</label>
+          </div>
+          <div id="realityFields" class="hidden">
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Public Key</label><input type="text" class="form-input" id="cfgRealityPk"></div>
+              <div class="form-group"><label class="form-label">Short ID</label><input type="text" class="form-input" id="cfgRealitySid" value=""></div>
+            </div>
+            <div class="form-group"><label class="form-label">Server Name</label><input type="text" class="form-input" id="cfgRealitySni"></div>
+          </div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">Fragment</div>
+        <div class="config-panel-body">
+          <div class="form-group">
+            <label class="form-toggle"><input type="checkbox" id="cfgFrag"> Enable Fragment</label>
+          </div>
+          <div id="fragFields" class="hidden">
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Packet Length</label><input type="text" class="form-input" id="cfgFragLen" placeholder="100-200"></div>
+              <div class="form-group"><label class="form-label">Interval</label><input type="text" class="form-input" id="cfgFragInt" placeholder="10-20"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">Noise (XUDP)</div>
+        <div class="config-panel-body">
+          <div class="form-group">
+            <label class="form-toggle"><input type="checkbox" id="cfgNoise"> Enable UDP Noise</label>
+          </div>
+          <div id="noiseFields" class="hidden">
+            <div class="form-group">
+              <label class="form-label">UDP Packets</label>
+              <select class="form-select" id="cfgNoisePkt">
+                <option value="d200">d200</option>
+                <option value="d400">d400</option>
+                <option value="b10-20">b10-20</option>
+                <option value="b20-40">b20-40</option>
+                <option value="k">k (keep-alive)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="generateConfig()">&#9654; Generate</button>
+        <button class="btn btn-secondary" onclick="resetConfig()">Reset</button>
+      </div>
     </div>
-    <div class="modal-body">
-      <div id="cmdResults"></div>
+    <div>
+      <div class="config-panel">
+        <div class="config-panel-header">VLESS Link</div>
+        <div class="config-panel-body">
+          <div class="output-box" id="linkBox">Configure and generate.</div>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="copyLink()" id="copyLinkBtn" style="display:none">Copy</button>
+            <button class="btn btn-secondary btn-sm" onclick="saveProfile()" id="saveBtn" style="display:none">Save Profile</button>
+          </div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">QR Code</div>
+        <div class="config-panel-body">
+          <div id="qrPlaceholder" style="text-align:center;color:var(--text-dim);padding:20px;font-size:0.9rem">QR code appears after generating.</div>
+          <div id="qrContainer" class="qr-container" style="display:none"><img id="qrImage" src="" alt="QR Code"></div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">Xray Config JSON</div>
+        <div class="config-panel-body">
+          <div class="output-box" id="jsonBox">Generated Xray config appears here.</div>
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" onclick="copyJson()" id="copyJsonBtn" style="display:none">Copy JSON</button>
+          </div>
+        </div>
+      </div>
+      <div class="config-panel">
+        <div class="config-panel-header">Saved Profiles (<span id="profileCount">0</span>)</div>
+        <div class="config-panel-body">
+          <div class="config-list" id="profileList"></div>
+          <div class="btn-group" id="profileActions" style="display:none">
+            <button class="btn btn-secondary btn-sm" onclick="clearProfiles()" style="color:var(--danger)">Clear All</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+</div>
 
-<!-- Nav -->
-<nav>
-  <div class="container">
-    <a href="#" class="nav-brand" onclick="showPage('home')">G2<span>Ray</span></a>
-    <ul class="nav-links">
-      <li><a href="#" onclick="showPage('home')" class="active" data-page="home">Home</a></li>
-      <li><a href="#" onclick="showPage('config')" data-page="config">Config</a></li>
-      <li><a href="#" onclick="showPage('guides')" data-page="guides">Guides</a></li>
-    </ul>
-    <div class="nav-ctrlk">
-      <kbd>Ctrl</kbd>+<kbd>K</kbd>
-    </div>
+<!-- GUIDES -->
+<div class="page" id="page-guides">
+<div class="container">
+  <h2 class="section-title">Setup Guides</h2>
+  <p class="section-sub">Step-by-step instructions for deploying your g2ray proxy.</p>
+  <div class="guide-section">
+    <h3>Quick Start</h3>
+    <p>Deploy your g2ray proxy using GitHub Codespaces.</p>
+    <ol style="list-style:none;counter-reset:step">
+      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
+        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">1</span>
+        Fork <a href="https://github.com/amircloner/g2ray" target="_blank">github.com/amircloner/g2ray</a>
+      </li>
+      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
+        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">2</span>
+        Click Code &rarr; Codespaces &rarr; Create codespace on main
+      </li>
+      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
+        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">3</span>
+        Wait 2-5 minutes for Xray to install
+      </li>
+      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
+        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">4</span>
+        Copy the VLESS link from terminal
+      </li>
+    </ol>
   </div>
-</nav>
-
-<main id="main">
-  <!-- HOME PAGE -->
-  <div class="page active" id="page-home">
-    <div class="container">
-      <div class="hero">
-        <h1>Build Your <span>G2Ray</span> Proxy</h1>
-        <p>Full-featured VLESS proxy configurator for GitHub Codespaces. Customize every parameter, generate connection links, and deploy instantly.</p>
-      </div>
-
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-icon">&#9881;</div>
-          <h3>Full Customization</h3>
-          <p>UUID, port, network type, path, SNI, TLS, fragment, noise -- every parameter adjustable.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#9776;</div>
-          <h3>Multi-Protocol</h3>
-          <p>XHTTP, WebSocket, HTTP/2, gRPC -- pick the transport that works best for your network.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#128241;</div>
-          <h3>One-Click Export</h3>
-          <p>Copy VLESS links, generate QR codes, download configs. Share with a single click.</p>
-        </div>
-      </div>
-
-      <h2 class="section-title">What is G2Ray?</h2>
-      <p class="section-sub">G2Ray runs Xray/VLESS inside GitHub Codespaces -- free proxy server with zero setup cost.</p>
-
-      <div class="guide-steps">
-        <li>Fork the G2Ray repo on GitHub</li>
-        <li>Open Codespaces and let it auto-deploy</li>
-        <li>Grab your VLESS link from the terminal</li>
-        <li>Import into any V2Ray-compatible client</li>
-      </div>
-
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="showPage('config')">Create Config</button>
-        <a href="https://github.com/edrisranjbar/g2ray" target="_blank" class="btn btn-secondary" rel="noopener">View on GitHub</a>
-      </div>
-
-      <div style="margin-top:48px">
-        <h2 class="section-title">Supported Protocols</h2>
-        <p class="section-sub">All protocols run over port 443 with TLS. Choose the best fit for your censorship environment.</p>
-        <div class="cards-grid">
-          <div class="card">
-            <h3>VLESS + XHTTP</h3>
-            <p>Default transport. Fastest, lowest overhead. Works on most networks.</p>
-          </div>
-          <div class="card">
-            <h3>VLESS + WebSocket</h3>
-            <p>Hides as regular WebSocket traffic. Good for heavily filtered networks.</p>
-          </div>
-          <div class="card">
-            <h3>VLESS + HTTP/2</h3>
-            <p>Uses HTTP/2 multiplexing. Bypasses deep packet inspection on some ISPs.</p>
-          </div>
-          <div class="card">
-            <h3>VLESS + gRPC</h3>
-            <p>gRPC transport. Resistant to DNS-level blocking.</p>
-          </div>
-          <div class="card">
-            <h3>Fragment Mode</h3>
-            <p>Breaks TLS records into fragments. Evades SNI-based blocking.</p>
-          </div>
-          <div class="card">
-            <h3>Noise (XUDP)</h3>
-            <p>UDP noise packets before TLS handshake. Masks traffic fingerprint.</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="guide-section">
+    <h3>SNI Format</h3>
+    <p>GitHub port-forwarder issues TLS certs for:</p>
+    <div class="guide-code">&lt;codespace-name&gt;-&lt;port&gt;.app.github.dev</div>
+    <p>Example: codespace named g2ray-main-abc123, port 443:</p>
+    <div class="guide-code">g2ray-main-abc123-443.app.github.dev</div>
   </div>
-
-  <!-- CONFIG PAGE -->
-  <div class="page" id="page-config">
-    <div class="container config-page">
-      <h2 class="section-title">Configuration</h2>
-      <p class="section-sub">Tune every parameter. Your VLESS link generates live.</p>
-
-      <div class="config-grid">
-        <!-- Left: Inputs -->
-        <div>
-          <!-- Basic Settings -->
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">Basic</div>
-            <div class="config-panel-body">
-              <div class="form-group">
-                <label class="form-label">Client Name</label>
-                <input type="text" class="form-input" id="cfgName" placeholder="g2ray-proxy" value="g2ray-proxy">
-              </div>
-              <div class="form-group">
-                <label class="form-label">UUID</label>
-                <div style="display:flex;gap:8px">
-                  <input type="text" class="form-input" id="cfgUuid" value="">
-                  <button class="btn btn-secondary btn-sm" onclick="generateUuid()" style="flex-shrink:0">Generate</button>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Port</label>
-                  <select class="form-select" id="cfgPort">
-                    <option value="443">443 (HTTPS)</option>
-                    <option value="8443">8443</option>
-                    <option value="2053">2053</option>
-                    <option value="2083">2083</option>
-                    <option value="2087">2087</option>
-                    <option value="2096">2096</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Server IP / Host</label>
-                  <input type="text" class="form-input" id="cfgHost" placeholder="94.130.50.12" value="94.130.50.12">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Network -->
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">Network Transport</div>
-            <div class="config-panel-body">
-              <div class="protocol-tabs" id="netTabs">
-                <button class="protocol-tab active" data-net="xhttp" onclick="setNetwork('xhttp')">XHTTP</button>
-                <button class="protocol-tab" data-net="ws" onclick="setNetwork('ws')">WebSocket</button>
-                <button class="protocol-tab" data-net="h2" onclick="setNetwork('h2')">HTTP/2</button>
-                <button class="protocol-tab" data-net="grpc" onclick="setNetwork('grpc')">gRPC</button>
-              </div>
-
-              <div id="field-xhttp">
-                <div class="form-group">
-                  <label class="form-label">Path</label>
-                  <input type="text" class="form-input" id="cfgPath" placeholder="/" value="/">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Mode</label>
-                  <select class="form-select" id="cfgMode">
-                    <option value="packet-up">packet-up</option>
-                    <option value="xhttp-go">xhttp-go</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Extra (JSON)</label>
-                  <textarea class="form-input" id="cfgExtra" rows="3" placeholder='{"padding":[{"bytes":"2048"}]}' style="resize:vertical"></textarea>
-                </div>
-              </div>
-
-              <div id="field-ws" class="hidden">
-                <div class="form-group">
-                  <label class="form-label">Path</label>
-                  <input type="text" class="form-input" id="cfgWsPath" placeholder="/" value="/">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Headers (JSON)</label>
-                  <textarea class="form-input" id="cfgWsHeaders" rows="3" placeholder='{"Host":"example.com"}' style="resize:vertical">{"Host":"example.com"}</textarea>
-                </div>
-                <div class="form-toggle">
-                  <input type="checkbox" id="cfgWsEarlyData" checked>
-                  <label for="cfgWsEarlyData">Enable Early Data</label>
-                </div>
-              </div>
-
-              <div id="field-h2" class="hidden">
-                <div class="form-group">
-                  <label class="form-label">Host (comma-separated)</label>
-                  <input type="text" class="form-input" id="cfgH2Host" placeholder="example.com" value="example.com">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Path</label>
-                  <input type="text" class="form-input" id="cfgH2Path" placeholder="/" value="/">
-                </div>
-              </div>
-
-              <div id="field-grpc" class="hidden">
-                <div class="form-group">
-                  <label class="form-label">Service Name</label>
-                  <input type="text" class="form-input" id="cfgGrpcSvc" placeholder="test" value="test">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Multi-mode</label>
-                  <select class="form-select" id="cfgGrpcMulti">
-                    <option value="false">false</option>
-                    <option value="true">true</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- TLS / REALITY -->
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">Security</div>
-            <div class="config-panel-body">
-              <div class="form-toggle">
-                <input type="checkbox" id="cfgTls" checked>
-                <label for="cfgTls">TLS Enabled</label>
-              </div>
-              <div class="form-group">
-                <label class="form-label">SNI (Server Name)</label>
-                <input type="text" class="form-input" id="cfgSni" placeholder="mycodespace-443.app.github.dev" value="">
-                <span style="font-size:0.75rem;color:var(--text-dim);margin-top:4px;display:block">Format: &lt;your-codespace-name&gt;-&lt;port&gt;.app.github.dev</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Fingerprint</label>
-                <select class="form-select" id="cfgFp">
-                  <option value="chrome">chrome</option>
-                  <option value="firefox">firefox</option>
-                  <option value="safari">safari</option>
-                  <option value="ios">ios</option>
-                  <option value="edge">edge</option>
-                  <option value="360">360</option>
-                  <option value="qq">qq</option>
-                  <option value="random">random</option>
-                  <option value="randomized">randomized</option>
-                  <option value="">none</option>
-                </select>
-              </div>
-              <div class="form-toggle">
-                <input type="checkbox" id="cfgReality">
-                <label for="cfgReality">REALITY</label>
-              </div>
-              <div id="realityFields" class="hidden">
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="form-label">Public Key</label>
-                    <input type="text" class="form-input" id="cfgRealityPk" placeholder="...">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Short ID</label>
-                    <input type="text" class="form-input" id="cfgRealitySid" placeholder="" value="">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Server Name</label>
-                  <input type="text" class="form-input" id="cfgRealitySni" placeholder="example.com">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Fragment -->
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">Fragment</div>
-            <div class="config-panel-body">
-              <div class="form-toggle">
-                <input type="checkbox" id="cfgFrag">
-                <label for="cfgFrag">Enable Fragment</label>
-              </div>
-              <div id="fragFields" class="hidden">
-                <div class="form-group">
-                  <label class="form-label">Packet Length</label>
-                  <input type="text" class="form-input" id="cfgFragLen" placeholder="100-200">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Interval</label>
-                  <input type="text" class="form-input" id="cfgFragInt" placeholder="10-20">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Stream Value (optional)</label>
-                  <input type="text" class="form-input" id="cfgFragStream" placeholder="">
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Noise -->
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">Noise (XUDP)</div>
-            <div class="config-panel-body">
-              <div class="form-toggle">
-                <input type="checkbox" id="cfgNoise">
-                <label for="cfgNoise">Enable UDP Noise</label>
-              </div>
-              <div id="noiseFields" class="hidden">
-                <div class="form-group">
-                  <label class="form-label">UDP Packets</label>
-                  <select class="form-select" id="cfgNoisePkt">
-                    <option value="d200">d200 (delay 200ms)</option>
-                    <option value="d400">d400 (delay 400ms)</option>
-                    <option value="d600">d600 (delay 600ms)</option>
-                    <option value="b10-20">b10-20 (10-20 bytes)</option>
-                    <option value="b20-40">b20-40 (20-40 bytes)</option>
-                    <option value="b40-80">b40-80 (40-80 bytes)</option>
-                    <option value="b80-120">b80-120 (80-120 bytes)</option>
-                    <option value="k">k (keep-alive)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Source Port</label>
-                  <select class="form-select" id="cfgNoiseSrc">
-                    <option value="">random</option>
-                    <option value="1000-2000">1000-2000</option>
-                    <option value="2000-3000">2000-3000</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="btn-group">
-            <button class="btn btn-primary" onclick="generateConfig()">&#9654; Generate Config</button>
-            <button class="btn btn-secondary" onclick="resetConfig()">Reset</button>
-          </div>
-        </div>
-
-        <!-- Right: Output -->
-        <div>
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">VLESS Link</div>
-            <div class="config-panel-body">
-              <div id="linkOutput">
-                <div class="output-box" id="linkBox">Configure and generate to see your VLESS link.</div>
-              </div>
-              <div class="btn-group">
-                <button class="btn btn-primary btn-sm" onclick="copyLink()" id="copyLinkBtn" style="display:none">&#128203; Copy Link</button>
-                <button class="btn btn-secondary btn-sm" onclick="downloadLinkFile()" id="downloadBtn" style="display:none">&#128190; Save .txt</button>
-                <button class="btn btn-secondary btn-sm" onclick="saveProfile()" id="saveBtn" style="display:none">&#128193; Save Profile</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">QR Code</div>
-            <div class="config-panel-body">
-              <div id="qrContainer" class="qr-container" style="display:none">
-                <img id="qrImage" src="" alt="QR Code">
-              </div>
-              <div id="qrPlaceholder" style="text-align:center;color:var(--text-dim);padding:24px">QR code appears after generating.</div>
-            </div>
-          </div>
-
-          <div class="config-panel" style="margin-bottom:24px">
-            <div class="config-panel-header">Xray Config JSON</div>
-            <div class="config-panel-body">
-              <div class="output-box" id="jsonBox">Generated Xray config appears here.</div>
-              <div class="btn-group">
-                <button class="btn btn-secondary btn-sm" onclick="copyJson()" id="copyJsonBtn" style="display:none">&#128203; Copy JSON</button>
-                <button class="btn btn-secondary btn-sm" onclick="downloadJson()" id="downloadJsonBtn" style="display:none">&#128190; Save .json</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="config-panel">
-            <div class="config-panel-header">Saved Profiles <span id="profileCount" style="color:var(--text-dim);font-weight:400;font-size:0.85rem">(0)</span></div>
-            <div class="config-panel-body">
-              <div class="config-list" id="profileList"></div>
-              <div class="btn-group" id="profileActions" style="display:none">
-                <button class="btn btn-danger btn-sm" onclick="clearProfiles()">&#128465; Clear All</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="guide-section">
+    <h3>Import into Client</h3>
+    <p>Copy the VLESS link into V2RayNG (Android), Clash Meta, or Nekoray (Desktop).</p>
   </div>
-
-  <!-- GUIDES PAGE -->
-  <div class="page" id="page-guides">
-    <div class="container">
-      <h2 class="section-title">Setup Guides</h2>
-      <p class="section-sub">Step-by-step instructions for deploying your G2Ray proxy.</p>
-
-      <div class="guide-section">
-        <h3>Quick Start</h3>
-        <p>Deploy your G2Ray proxy in under 2 minutes using GitHub Codespaces.</p>
-        <ol class="guide-steps">
-          <li>Go to <a href="https://github.com/edrisranjbar/g2ray" target="_blank">github.com/edrisranjbar/g2ray</a> and fork the repository</li>
-          <li>Click the green <strong>Code</strong> button, then switch to the <strong>Codespaces</strong> tab</li>
-          <li>Click <strong>Create codespace on main</strong></li>
-          <li>Wait 2-5 minutes for Xray to install</li>
-          <li>Your VLESS link will print in the terminal</li>
-        </ol>
-      </div>
-
-      <div class="guide-section">
-        <h3>Import into Your Client</h3>
-        <p>Copy the generated VLESS link and import it into your proxy client:</p>
-        <div class="cards-grid">
-          <div class="card">
-            <h3>V2RayNG (Android)</h3>
-            <p>Open app &rarr; Settings &rarr; Import from clipboard or scan QR code.</p>
-          </div>
-          <div class="card">
-            <h3>Clash Meta</h3>
-            <p>Open Clash &rarr; Profiles &rarr; Add from clipboard or file.</p>
-          </div>
-          <div class="card">
-            <h3>Nekoray (Desktop)</h3>
-            <p>Open Nekoray &rarr; Settings &rarr; Add new server from clipboard.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="guide-section">
-        <h3>Understanding Your Configuration</h3>
-        <p>The VLESS link follows this format:</p>
-        <div class="guide-code">vless://UUID@HOST:PORT?encryption=none&amp;type=NETWORK&amp;security=TLS&amp;sni=SNI#NAME</div>
-        <p>Key parameters:</p>
-        <ul style="list-style:none;margin:12px 0">
-          <li style="padding:4px 0"><strong>UUID</strong> -- Your unique identifier. Must be a valid v4 UUID.</li>
-          <li style="padding:4px 0"><strong>HOST</strong> -- Server IP address or domain.</li>
-          <li style="padding:4px 0"><strong>PORT</strong> -- Usually 443 for TLS.</li>
-          <li style="padding:4px 0"><strong>type</strong> -- Network transport (xhttp, ws, h2, grpc).</li>
-          <li style="padding:4px 0"><strong>security</strong> -- tls or reality.</li>
-          <li style="padding:4px 0"><strong>sni</strong> -- Server Name Indication for TLS.</li>
-        </ul>
-      </div>
-
-      <div class="guide-section">
-        <h3>Fragment Configuration</h3>
-        <p>Fragment breaks the TLS handshake into smaller pieces to evade SNI blocking.</p>
-        <div class="guide-code">fragment=true&amp;packetLength=100-200&amp;interval=10-20</div>
-        <p>Recommended values for different scenarios:</p>
-        <div class="guide-code"># Iran (Shecan) -- use default
-fragment=100-200,10-20
-
-# Heavy filtering -- try larger fragments
-fragment=500-700,15-25</div>
-      </div>
-
-      <div class="guide-section">
-        <h3>Network Recommendations</h3>
-        <div class="cards-grid">
-          <div class="card">
-            <h3>Shecan (Free)</h3>
-            <p>Use ports 443 or 8443. XHTTP transport recommended.</p>
-          </div>
-          <div class="card">
-            <h3>TciNet</h3>
-            <p>WebSocket with early data works best. Add fragment for reliability.</p>
-          </div>
-          <div class="card">
-            <h3>International</h3>
-            <p>Any transport works. gRPC offers best stealth.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="guide-section">
-        <h3>Troubleshooting</h3>
-        <div class="accordion-item">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            Codespace won't start
-            <span class="accordion-arrow">&#9660;</span>
-          </div>
-          <div class="accordion-body">
-            Check your GitHub Codespaces quota. Free tier gives 120 compute hours/month. Stop any running codespaces and try creating a new one.
-          </div>
-        </div>
-        <div class="accordion-item">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            Connection times out
-            <span class="accordion-arrow">&#9660;</span>
-          </div>
-          <div class="accordion-body">
-            Try a different network transport (ws, h2, grpc). Change the server IP to a different datacenter. Enable fragment mode. Check if your ISP blocks the port.
-          </div>
-        </div>
-        <div class="accordion-item">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            TLS certificate error
-            <span class="accordion-arrow">&#9660;</span>
-          </div>
-          <div class="accordion-body">
-            Verify your SNI matches the certificate. The GitHub Codespace URL follows the pattern: &lt;codespace-name&gt;-443.&lt;region&gt;.github.dev
-          </div>
-        </div>
-        <div class="accordion-item">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            Slow speeds
-            <span class="accordion-arrow">&#9660;</span>
-          </div>
-          <div class="accordion-body">
-            Use xhttp-go mode for better throughput. Reduce fragment packet size. Try HTTP/2 transport. Check if another codespace is consuming bandwidth.
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="guide-section">
+    <h3>Troubleshooting</h3>
+    <div class="guide-code">Connection times out &rarr; try ws/h2/grpc transport + fragment\nSlow speeds &rarr; use xhttp-go mode\nTLS error &rarr; verify SNI matches codespace name\nQuota used &rarr; stop codespace when not in use</div>
   </div>
+</div>
+</div>
 </main>
 
-<footer>
-  <div class="container">
-    G2Ray Configurator -- Build, customize, deploy VLESS proxies for GitHub Codespaces.
-  </div>
-</footer>
-
-<!-- Toast -->
+<footer><div class="container">g2ray Configurator -- Build, customize, deploy VLESS proxies for GitHub Codespaces.</div></footer>
 <div class="toast" id="toast"></div>
 
 <script>
-// State
 let currentNetwork = 'xhttp';
-let currentLink = '';
-let currentJson = '';
 let savedProfiles = JSON.parse(localStorage.getItem('g2ray_profiles') || '[]');
-
-// Init
-document.addEventListener('DOMContentLoaded', () => {
-  generateUuid();
-  renderProfiles();
-  document.addEventListener('keydown', handleCmdPalette);
-});
-
-// Page nav
+document.addEventListener('DOMContentLoaded', () => { generateUuid(); renderProfiles(); });
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('.nav-links a').forEach(a => {
-    a.classList.toggle('active', a.dataset.page === name);
-  });
+  document.querySelectorAll('.nav-links a, .nav-links a[data-page]').forEach(a => a.classList.toggle('active', a.dataset.page === name));
   window.scrollTo(0, 0);
 }
-
-// UUID
-function generateUuid() {
-  const uuid = crypto.randomUUID();
-  document.getElementById('cfgUuid').value = uuid;
-}
-
-// Network tabs
+function generateUuid() { document.getElementById('cfgUuid').value = crypto.randomUUID(); }
 function setNetwork(net) {
   currentNetwork = net;
-  document.querySelectorAll('#netTabs .protocol-tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.net === net);
-  });
-  ['xhttp', 'ws', 'h2', 'grpc'].forEach(n => {
-    const el = document.getElementById('field-' + n);
-    if (el) el.classList.toggle('hidden', n !== net);
-  });
+  document.querySelectorAll('#netTabs .protocol-tab').forEach(t => t.classList.toggle('active', t.dataset.net === net));
+  ['xhttp','ws','h2','grpc'].forEach(n => { const el = document.getElementById('field-' + n); if (el) el.classList.toggle('hidden', n !== net); });
 }
-
-// Toggles
-document.getElementById('cfgTls').addEventListener('change', function() {
-  document.getElementById('realityFields').classList.toggle('hidden', !this.checked);
-});
-document.getElementById('cfgReality').addEventListener('change', function() {
-  document.getElementById('realityFields').classList.toggle('hidden', !this.checked);
-});
-document.getElementById('cfgFrag').addEventListener('change', function() {
-  document.getElementById('fragFields').classList.toggle('hidden', !this.checked);
-});
-document.getElementById('cfgNoise').addEventListener('change', function() {
-  document.getElementById('noiseFields').classList.toggle('hidden', !this.checked);
-});
-
-// Generate
+document.getElementById('cfgTls').addEventListener('change', () => document.getElementById('realityFields').classList.toggle('hidden', !this.checked));
+document.getElementById('cfgReality').addEventListener('change', () => document.getElementById('realityFields').classList.toggle('hidden', !this.checked));
+document.getElementById('cfgFrag').addEventListener('change', () => document.getElementById('fragFields').classList.toggle('hidden', !this.checked));
+document.getElementById('cfgNoise').addEventListener('change', () => document.getElementById('noiseFields').classList.toggle('hidden', !this.checked));
 function generateConfig() {
   const uuid = document.getElementById('cfgUuid').value.trim();
   const name = document.getElementById('cfgName').value.trim() || 'g2ray-proxy';
@@ -960,47 +476,27 @@ function generateConfig() {
   const host = document.getElementById('cfgHost').value.trim();
   const tls = document.getElementById('cfgTls').checked;
   const sniInput = document.getElementById('cfgSni').value.trim();
-  const sni = sniInput || host + '-443.app.github.dev';
+  const sni = sniInput || host + '-' + port + '.app.github.dev';
   const fp = document.getElementById('cfgFp').value;
   const reality = document.getElementById('cfgReality').checked;
-
-  if (!uuid || !host) {
-    showToast('Fill in UUID and Server IP.');
-    return;
-  }
-
-  const params = {
-    encryption: 'none',
-    type: currentNetwork,
-  };
-
+  if (!uuid || !host) { showToast('Fill in UUID and Server IP.'); return; }
+  const params = { encryption: 'none', type: currentNetwork };
   if (currentNetwork === 'xhttp') {
     params.path = document.getElementById('cfgPath').value.trim() || '/';
     params.mode = document.getElementById('cfgMode').value;
     const extra = document.getElementById('cfgExtra').value.trim();
-    if (extra) {
-      try { params.extra = JSON.parse(extra); } catch(e) { showToast('Invalid JSON in Extra field.'); return; }
-    }
+    if (extra) { try { params.extra = JSON.parse(extra); } catch(e) { showToast('Invalid JSON in Extra.'); return; } }
   } else if (currentNetwork === 'ws') {
     params.path = document.getElementById('cfgWsPath').value.trim() || '/';
-    const headers = document.getElementById('cfgWsHeaders').value.trim();
-    if (headers) {
-      try { params.host = JSON.parse(headers).Host || document.getElementById('cfgWsHeaders').value.trim(); } catch(e) { params.host = headers; }
-    }
-    if (document.getElementById('cfgWsEarlyData').checked) {
-      params.earlyData = true;
-      params.earlyDataHeaderName = 'Sec-WebSocket-Protocol';
-    }
+    params.host = document.getElementById('cfgWsHost').value.trim() || 'example.com';
+    if (document.getElementById('cfgWsEarly').checked) { params.earlyData = true; params.earlyDataHeaderName = 'Sec-WebSocket-Protocol'; }
   } else if (currentNetwork === 'h2') {
     params.host = document.getElementById('cfgH2Host').value.trim() || 'example.com';
     params.path = document.getElementById('cfgH2Path').value.trim() || '/';
   } else if (currentNetwork === 'grpc') {
     params.serviceName = document.getElementById('cfgGrpcSvc').value.trim() || 'test';
-    if (document.getElementById('cfgGrpcMulti').value === 'true') {
-      params.multiMode = true;
-    }
+    if (document.getElementById('cfgGrpcMulti').checked) params.multiMode = true;
   }
-
   if (tls) {
     params.security = reality ? 'reality' : 'tls';
     params.sni = sni;
@@ -1013,351 +509,98 @@ function generateConfig() {
       if (!params.pbk) { showToast('REALITY requires a Public Key.'); return; }
     }
   }
-
-  // Fragment
   if (document.getElementById('cfgFrag').checked) {
     const fragLen = document.getElementById('cfgFragLen').value.trim();
     const fragInt = document.getElementById('cfgFragInt').value.trim();
-    if (!fragLen || !fragInt) {
-      showToast('Fragment requires packetLength and interval.');
-      return;
-    }
+    if (!fragLen || !fragInt) { showToast('Fragment requires packetLength and interval.'); return; }
     params.fragment = fragLen + '-' + fragInt;
   }
-
-  // Noise
   if (document.getElementById('cfgNoise').checked) {
-    const noisePkt = document.getElementById('cfgNoisePkt').value;
-    const noiseSrc = document.getElementById('cfgNoiseSrc').value;
-    params.noise = JSON.stringify([{ type: 'udp', packet: noisePkt, source: noiseSrc }]);
+    params.noise = JSON.stringify([{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value }]);
   }
-
   const qs = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) {
-    if (v !== undefined && v !== '') {
-      qs.set(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
-    }
+    if (v !== undefined && v !== '') qs.set(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
   }
-
-  currentLink = 'vless://' + uuid + '@' + host + ':' + port + '?' + qs.toString() + '#' + encodeURIComponent(name);
+  const currentLink = 'vless://' + uuid + '@' + host + ':' + port + '?' + qs.toString() + '#' + encodeURIComponent(name);
   document.getElementById('linkBox').textContent = currentLink;
   document.getElementById('copyLinkBtn').style.display = 'inline-flex';
-  document.getElementById('downloadBtn').style.display = 'inline-flex';
   document.getElementById('saveBtn').style.display = 'inline-flex';
-
-  // QR
   const qrEl = document.getElementById('qrContainer');
   const qrImg = document.getElementById('qrImage');
   const qrPlaceholder = document.getElementById('qrPlaceholder');
   qrEl.style.display = 'flex';
   qrPlaceholder.style.display = 'none';
   qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(currentLink);
-
-  // JSON
   generateJson(uuid, name, port, host, tls, sni, fp, reality);
   showToast('Config generated.');
 }
-
 function generateJson(uuid, name, port, host, tls, sni, fp, reality) {
   const network = currentNetwork;
-  let streamSettings = {};
-
+  let stream = {};
   if (network === 'xhttp') {
-    streamSettings.xhttpSettings = {
-      mode: document.getElementById('cfgMode').value,
-      path: document.getElementById('cfgPath').value.trim() || '/'
-    };
+    stream.xhttpSettings = { mode: document.getElementById('cfgMode').value, path: document.getElementById('cfgPath').value.trim() || '/' };
     const extra = document.getElementById('cfgExtra').value.trim();
-    if (extra) {
-      try { streamSettings.xhttpSettings.extra = JSON.parse(extra); } catch(e) {}
-    }
+    if (extra) { try { stream.xhttpSettings.extra = JSON.parse(extra); } catch(e) {} }
   } else if (network === 'ws') {
-    streamSettings.wsSettings = {
-      path: document.getElementById('cfgWsPath').value.trim() || '/',
-      headers: {}
-    };
-    const headers = document.getElementById('cfgWsHeaders').value.trim();
-    if (headers) {
-      try { streamSettings.wsSettings.headers = JSON.parse(headers); } catch(e) {}
-    }
-    if (document.getElementById('cfgWsEarlyData').checked) {
-      streamSettings.wsSettings.maxEarlyData = 2048;
-      streamSettings.wsSettings.earlyDataHeaderName = 'Sec-WebSocket-Protocol';
-    }
+    stream.wsSettings = { path: document.getElementById('cfgWsPath').value.trim() || '/', headers: { Host: document.getElementById('cfgWsHost').value.trim() || 'example.com' } };
+    if (document.getElementById('cfgWsEarly').checked) { stream.wsSettings.maxEarlyData = 2048; stream.wsSettings.earlyDataHeaderName = 'Sec-WebSocket-Protocol'; }
   } else if (network === 'h2') {
-    streamSettings.httpSettings = {
-      host: [document.getElementById('cfgH2Host').value.trim() || 'example.com'],
-      path: document.getElementById('cfgH2Path').value.trim() || '/'
-    };
+    stream.httpSettings = { host: [document.getElementById('cfgH2Host').value.trim() || 'example.com'], path: document.getElementById('cfgH2Path').value.trim() || '/' };
   } else if (network === 'grpc') {
-    streamSettings.grpcSettings = {
-      serviceName: document.getElementById('cfgGrpcSvc').value.trim() || 'test',
-      multiMode: document.getElementById('cfgGrpcMulti').value === 'true'
-    };
+    stream.grpcSettings = { serviceName: document.getElementById('cfgGrpcSvc').value.trim() || 'test', multiMode: document.getElementById('cfgGrpcMulti').checked };
   }
-
   if (tls) {
-    streamSettings.security = 'tls';
-    streamSettings.tlsSettings = {
-      serverNames: [sni]
-    };
-
+    stream.security = 'tls';
     if (reality) {
-      streamSettings.tlsSettings = {
-        serverNames: [sni]
-      };
-      streamSettings.realitySettings = {
-        publicKey: document.getElementById('cfgRealityPk').value.trim(),
-        shortId: document.getElementById('cfgRealitySid').value.trim() || '',
-        serverNames: [document.getElementById('cfgRealitySni').value.trim() || sni]
-      };
-      if (fp) streamSettings.realitySettings.fingerprint = fp;
-    } else if (fp) {
-      streamSettings.tlsSettings.fingerprint = fp;
+      stream.tlsSettings = { serverNames: [sni] };
+      stream.realitySettings = { publicKey: document.getElementById('cfgRealityPk').value.trim(), shortId: document.getElementById('cfgRealitySid').value.trim() || '', serverNames: [document.getElementById('cfgRealitySni').value.trim() || sni] };
+      if (fp) stream.realitySettings.fingerprint = fp;
+    } else {
+      stream.tlsSettings = { serverNames: [sni] };
+      if (fp) stream.tlsSettings.fingerprint = fp;
     }
   }
-
-  const inbound = {
-    port: parseInt(port),
-    protocol: 'vless',
-    settings: {
-      clients: [{ id: uuid }],
-      decryption: 'none'
-    }
-  };
-
-  if (network !== 'xhttp') {
-    inbound.streamSettings = streamSettings;
-  } else {
-    inbound.streamSettings = streamSettings;
-  }
-
-  const config = {
-    log: { loglevel: 'warning' },
-    inbounds: [inbound],
-    outbounds: [
-      { protocol: 'freedom', settings: {} },
-      ...(document.getElementById('cfgFrag').checked ? [{
-        protocol: 'freedom',
-        settings: {
-          domainStrategy: 'UseIP',
-          fragment: {
-            packets: 'tlshello',
-            length: document.getElementById('cfgFragLen').value.trim() || '100-200',
-            interval: { min: document.getElementById('cfgFragInt').value.trim().split('-')[0] || '10', max: document.getElementById('cfgFragInt').value.trim().split('-')[1] || '20' }
-          }
-        },
-        tag: 'fragment'
-      }] : []),
-      ...(document.getElementById('cfgNoise').checked ? [{
-        protocol: 'noise',
-        settings: JSON.parse(document.getElementById('cfgNoisePkt').value) ? [{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value, source: document.getElementById('cfgNoiseSrc').value }] : [{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value }],
-        tag: 'noise'
-      }] : [])
-    ]
-  };
-
+  const inbound = { tag: 'vless-in', port: parseInt(port), protocol: 'vless', settings: { clients: [{ id: uuid, flow: '' }], decryption: 'none' }, streamSettings: stream };
+  const config = { log: { loglevel: 'warning' }, inbounds: [inbound], outbounds: [{ tag: 'direct', protocol: 'freedom', settings: {} }] };
   if (document.getElementById('cfgFrag').checked) {
-    const frag = config.outbounds.find(o => o.tag === 'fragment');
-    if (frag) config.outbounds.unshift({
-      protocol: 'vless',
-      settings: { vnext: [{ address: host, port: parseInt(port), users: [{ id: uuid, encryption: 'none' }] }] },
-      streamSettings: streamSettings,
-      tag: 'proxy'
-    });
+    config.outbounds.push({ tag: 'fragment-out', protocol: 'freedom', settings: { fragment: { packets: 'tlshello', length: document.getElementById('cfgFragLen').value.trim() || '100-200', interval: { min: document.getElementById('cfgFragInt').value.trim().split('-')[0] || '10', max: document.getElementById('cfgFragInt').value.trim().split('-')[1] || '20' } } } });
+    config.outbounds.push({ tag: 'proxy-out', protocol: 'vless', settings: { vnext: [{ address: host, port: parseInt(port), users: [{ id: uuid, encryption: 'none' }] }] }, streamSettings: stream });
   }
-
-  currentJson = JSON.stringify(config, null, 2);
+  if (document.getElementById('cfgNoise').checked) {
+    config.outbounds.push({ tag: 'noise-out', protocol: 'noise', settings: [{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value }] });
+  }
+  const currentJson = JSON.stringify(config, null, 2);
   document.getElementById('jsonBox').textContent = currentJson;
   document.getElementById('copyJsonBtn').style.display = 'inline-flex';
-  document.getElementById('downloadJsonBtn').style.display = 'inline-flex';
 }
-
-function copyLink() {
-  navigator.clipboard.writeText(currentLink).then(() => showToast('Link copied to clipboard.'));
-}
-
-function copyJson() {
-  navigator.clipboard.writeText(currentJson).then(() => showToast('JSON copied to clipboard.'));
-}
-
-function downloadLinkFile() {
-  const blob = new Blob([currentLink], { type: 'text/plain' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'g2ray-config.txt';
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
-function downloadJson() {
-  const blob = new Blob([currentJson], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'xray-config.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-
+function copyLink() { navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(() => showToast('Link copied.')); }
+function copyJson() { navigator.clipboard.writeText(document.getElementById('jsonBox').textContent).then(() => showToast('JSON copied.')); }
 function saveProfile() {
-  const profile = {
-    id: Date.now().toString(),
-    name: document.getElementById('cfgName').value.trim() || 'g2ray-proxy',
-    uuid: document.getElementById('cfgUuid').value,
-    port: document.getElementById('cfgPort').value,
-    host: document.getElementById('cfgHost').value.trim(),
-    network: currentNetwork,
-    sni: document.getElementById('cfgSni').value.trim(),
-    tls: document.getElementById('cfgTls').checked,
-    link: currentLink
-  };
+  const profile = { id: Date.now().toString(), name: document.getElementById('cfgName').value.trim() || 'g2ray-proxy', link: document.getElementById('linkBox').textContent, network: currentNetwork, port: document.getElementById('cfgPort').value, host: document.getElementById('cfgHost').value.trim() };
   savedProfiles.push(profile);
   localStorage.setItem('g2ray_profiles', JSON.stringify(savedProfiles));
   renderProfiles();
   showToast('Profile saved.');
 }
-
 function renderProfiles() {
   const list = document.getElementById('profileList');
   const actions = document.getElementById('profileActions');
-  document.getElementById('profileCount').textContent = '(' + savedProfiles.length + ')';
-  if (!savedProfiles.length) {
-    list.innerHTML = '<p style="color:var(--text-dim);font-size:0.85rem">No saved profiles.</p>';
-    actions.style.display = 'none';
-    return;
-  }
+  document.getElementById('profileCount').textContent = savedProfiles.length;
+  if (!savedProfiles.length) { list.innerHTML = '<p style="color:var(--text-dim);font-size:0.82rem">No saved profiles.</p>'; actions.style.display = 'none'; return; }
   actions.style.display = 'flex';
-  list.innerHTML = savedProfiles.map(p =>
-    '<div class="config-item">' +
-      '<div class="config-item-info">' +
-        '<div class="config-item-name">' + p.name + '</div>' +
-        '<div class="config-item-meta">' + p.network + ' | ' + p.host + ':' + p.port + ' | ' + (p.tls ? 'tls' : 'no-tls') + '</div>' +
-      '</div>' +
-      '<div class="config-item-actions">' +
-        '<button class="btn btn-secondary btn-sm" onclick="copyProfile(\'' + p.id + '\')">Copy</button>' +
-        '<button class="btn btn-secondary btn-sm" onclick="deleteProfile(\'' + p.id + '\')" style="color:var(--danger)">Delete</button>' +
-      '</div>' +
-    '</div>'
-  ).join('');
+  list.innerHTML = savedProfiles.map(p => '<div class="config-item"><div class="config-item-info"><div class="config-item-name">' + p.name + '</div><div class="config-item-meta">' + p.network + ' | ' + p.host + ':' + p.port + '</div></div><div class="config-item-actions"><button class="btn btn-secondary btn-sm" onclick="copyProfile(\'' + p.id + '\')">Copy</button><button class="btn btn-secondary btn-sm" onclick="deleteProfile(\'' + p.id + '\')" style="color:var(--danger)">Delete</button></div></div>').join('');
 }
-
-function copyProfile(id) {
-  const p = savedProfiles.find(x => x.id === id);
-  if (p) {
-    navigator.clipboard.writeText(p.link).then(() => showToast('Profile link copied.'));
-  }
-}
-
-function deleteProfile(id) {
-  savedProfiles = savedProfiles.filter(x => x.id !== id);
-  localStorage.setItem('g2ray_profiles', JSON.stringify(savedProfiles));
-  renderProfiles();
-  showToast('Profile deleted.');
-}
-
-function clearProfiles() {
-  savedProfiles = [];
-  localStorage.setItem('g2ray_profiles', '[]');
-  renderProfiles();
-  showToast('All profiles cleared.');
-}
-
+function copyProfile(id) { const p = savedProfiles.find(x => x.id === id); if (p) navigator.clipboard.writeText(p.link).then(() => showToast('Profile copied.')); }
+function deleteProfile(id) { savedProfiles = savedProfiles.filter(x => x.id !== id); localStorage.setItem('g2ray_profiles', JSON.stringify(savedProfiles)); renderProfiles(); showToast('Profile deleted.'); }
+function clearProfiles() { savedProfiles = []; localStorage.setItem('g2ray_profiles', '[]'); renderProfiles(); showToast('Cleared.'); }
 function resetConfig() {
-  document.getElementById('cfgName').value = 'g2ray-proxy';
-  generateUuid();
-  document.getElementById('cfgPort').value = '443';
-  document.getElementById('cfgHost').value = '94.130.50.12';
-  document.getElementById('cfgSni').value = '';
-  document.getElementById('cfgFp').value = 'chrome';
-  document.getElementById('cfgTls').checked = true;
-  document.getElementById('cfgReality').checked = false;
-  document.getElementById('cfgRealityPk').value = '';
-  document.getElementById('cfgRealitySid').value = '';
-  document.getElementById('cfgRealitySni').value = '';
-  document.getElementById('cfgFrag').checked = false;
-  document.getElementById('cfgNoise').checked = false;
-  document.getElementById('cfgPath').value = '/';
-  document.getElementById('cfgMode').value = 'packet-up';
-  document.getElementById('cfgExtra').value = '';
-  document.getElementById('cfgWsPath').value = '/';
-  document.getElementById('cfgWsHeaders').value = '{"Host":"example.com"}';
-  document.getElementById('cfgWsEarlyData').checked = true;
-  document.getElementById('cfgH2Host').value = 'example.com';
-  document.getElementById('cfgH2Path').value = '/';
-  document.getElementById('cfgGrpcSvc').value = 'test';
-  document.getElementById('cfgGrpcMulti').value = 'false';
-  document.getElementById('cfgFragLen').value = '';
-  document.getElementById('cfgFragInt').value = '';
-  document.getElementById('cfgFragStream').value = '';
-  setNetwork('xhttp');
-  document.getElementById('realityFields').classList.add('hidden');
-  document.getElementById('fragFields').classList.add('hidden');
-  document.getElementById('noiseFields').classList.add('hidden');
-  document.getElementById('linkBox').textContent = 'Configure and generate to see your VLESS link.';
-  document.getElementById('copyLinkBtn').style.display = 'none';
-  document.getElementById('downloadBtn').style.display = 'none';
-  document.getElementById('saveBtn').style.display = 'none';
-  document.getElementById('qrContainer').style.display = 'none';
-  document.getElementById('qrPlaceholder').style.display = 'block';
-  document.getElementById('jsonBox').textContent = 'Generated Xray config appears here.';
-  document.getElementById('copyJsonBtn').style.display = 'none';
-  document.getElementById('downloadJsonBtn').style.display = 'none';
-  showToast('Configuration reset.');
+  document.getElementById('cfgName').value = 'g2ray-proxy'; generateUuid(); document.getElementById('cfgPort').value = '443'; document.getElementById('cfgHost').value = '94.130.50.12'; document.getElementById('cfgSni').value = ''; document.getElementById('cfgFp').value = 'chrome'; document.getElementById('cfgTls').checked = true; document.getElementById('cfgReality').checked = false; document.getElementById('cfgFrag').checked = false; document.getElementById('cfgNoise').checked = false; document.getElementById('cfgPath').value = '/'; document.getElementById('cfgMode').value = 'packet-up'; document.getElementById('cfgExtra').value = ''; document.getElementById('cfgWsPath').value = '/'; document.getElementById('cfgWsHost').value = 'example.com'; document.getElementById('cfgWsEarly').checked = true; document.getElementById('cfgH2Host').value = 'example.com'; document.getElementById('cfgH2Path').value = '/'; document.getElementById('cfgGrpcSvc').value = 'test'; document.getElementById('cfgGrpcMulti').checked = false; document.getElementById('cfgFragLen').value = ''; document.getElementById('cfgFragInt').value = '';
+  setNetwork('xhttp'); document.getElementById('realityFields').classList.add('hidden'); document.getElementById('fragFields').classList.add('hidden'); document.getElementById('noiseFields').classList.add('hidden');
+  document.getElementById('linkBox').textContent = 'Configure and generate.'; document.getElementById('copyLinkBtn').style.display = 'none'; document.getElementById('saveBtn').style.display = 'none'; document.getElementById('qrContainer').style.display = 'none'; document.getElementById('qrPlaceholder').style.display = 'block'; document.getElementById('jsonBox').textContent = 'Generated Xray config.'; document.getElementById('copyJsonBtn').style.display = 'none';
+  showToast('Reset.');
 }
-
-// Command Palette
-function handleCmdPalette(e) {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-    e.preventDefault();
-    toggleCmdPalette();
-  }
-  if (e.key === 'Escape') {
-    document.getElementById('cmdPalette').classList.remove('active');
-  }
-}
-
-function toggleCmdPalette() {
-  const modal = document.getElementById('cmdPalette');
-  modal.classList.toggle('active');
-  if (modal.classList.contains('active')) {
-    const results = document.getElementById('cmdResults');
-    results.innerHTML = `
-      <div style="padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="showPage('home');toggleCmdPalette()">Home</div>
-      <div style="padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="showPage('config');toggleCmdPalette()">Config</div>
-      <div style="padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="showPage('guides');toggleCmdPalette()">Guides</div>
-      <div style="padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="generateUuid();showPage('config');toggleCmdPalette()">Generate new UUID</div>
-      <div style="padding:8px 0;cursor:pointer" onclick="resetConfig();showPage('config');toggleCmdPalette()">Reset config</div>
-    `;
-  }
-}
-
-// Accordion
-function toggleAccordion(header) {
-  header.parentElement.classList.toggle('open');
-}
-
-// Toast
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toast._timer);
-  toast._timer = setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-// Live generate on input change
-document.querySelectorAll('.form-input, .form-select, .form-toggle input').forEach(el => {
-  el.addEventListener('input', () => {
-    if (document.getElementById('linkBox').textContent !== 'Configure and generate to see your VLESS link.' && document.getElementById('linkBox').textContent.startsWith('vless://')) {
-      generateConfig();
-    }
-  });
-  el.addEventListener('change', () => {
-    if (document.getElementById('linkBox').textContent !== 'Configure and generate to see your VLESS link.' && document.getElementById('linkBox').textContent.startsWith('vless://')) {
-      generateConfig();
-    }
-  });
-});
+function showToast(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), 2500); }
 </script>
 </body>
 </html>

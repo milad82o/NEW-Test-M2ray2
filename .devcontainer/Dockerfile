@@ -5,6 +5,7 @@ ENV XRAY_VERSION=v26.3.27
 COPY setup.sh /tmp/setup.sh
 COPY config.json /etc/xray/g2ray.json
 COPY show-link.sh /usr/local/bin/show-link.sh
+COPY start.sh /usr/local/bin/start.sh
 COPY startup.sh /usr/local/bin/startup.sh
 
 RUN apt-get update \
@@ -16,8 +17,9 @@ RUN apt-get update \
     && /tmp/setup.sh \
     && rm /tmp/setup.sh \
     && chmod +x /usr/local/bin/show-link.sh \
+    && chmod +x /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/startup.sh
 
 EXPOSE 443
 
-CMD ["/usr/local/bin/xray","run","-c","/etc/xray/g2ray.json"]
+CMD ["/usr/local/bin/startup.sh"]

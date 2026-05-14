@@ -3,653 +3,605 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>g2ray Configurator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>G2Ray Config Generator</title>
 <style>
-:root {
-  --bg: #0f0f11;
-  --surface: #18181b;
-  --surface2: #1e1e22;
-  --border: #2a2a2e;
-  --text: #e4e4e7;
-  --text-dim: #a1a1aa;
-  --accent: #7c3aed;
-  --accent-bright: #a78bfa;
-  --accent-glow: rgba(124,58,237,0.15);
-  --danger: #ef4444;
-  --success: #22c55e;
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--surface:#0d1117;--card:#111820;--card2:#0d1117;
+  --border:#1e2733;--border2:#253040;--text:#c9d1d9;--text2:#8b949e;
+  --text3:#484f58;--green:#3fb950;--green-dim:#1a3a1e;
+  --yellow:#e3b341;--yellow-dim:#3a2e12;--red:#f85149;--red-dim:#3a1a1a;
+  --blue:#58a6ff;--blue-dim:#102040;--purple:#bc8cff;
+  --radius:10px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.6;
-  text-wrap: pretty;
-  min-height: 100vh;
+body{
+  font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;
 }
-a { color: var(--accent-bright); text-decoration: none; }
-a:hover { color: var(--accent); text-decoration: underline; }
-:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; }
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-.page { display: none; padding: 48px 0; }
-.page.active { display: block; }
-.hero { padding: 60px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
-.hero h1 {
-  font-family: var(--font-display);
-  font-size: 2.8rem; font-weight: 800;
-  line-height: 1.1; letter-spacing: -1.5px;
-  margin-bottom: 16px;
+a{color:var(--blue);text-decoration:none}
+.container{max-width:780px;margin:0 auto;padding:0 20px}
+.header{
+  background:linear-gradient(160deg,#0d1a2a 0%,#0a1a10 60%,#0d1117 100%);
+  padding:24px 20px;border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
 }
-.hero h1 span { color: var(--accent-bright); }
-.hero p { font-size: 1.1rem; color: var(--text-dim); max-width: 550px; }
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 24px; transition: all 0.2s;
+.header::before{
+  content:'';position:absolute;top:-60px;left:-60px;width:200px;height:200px;
+  background:radial-gradient(circle,rgba(63,185,80,.12),transparent 70%);pointer-events:none;
 }
-.card:hover { border-color: var(--accent); }
-.card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
-.card p { color: var(--text-dim); font-size: 0.85rem; }
-.section-title {
-  font-family: var(--font-display); font-size: 1.5rem;
-  font-weight: 700; margin-bottom: 6px;
+.header h1{
+  font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;
 }
-.section-sub { color: var(--text-dim); margin-bottom: 24px; font-size: 0.95rem; }
-.config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.config-panel {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+.header .ver{
+  font-size:11px;background:var(--green-dim);color:var(--green);
+  padding:2px 10px;border-radius:20px;border:1px solid #2d5a30;font-weight:700;letter-spacing:.04em;margin-left:8px;
 }
-.config-panel-header {
-  padding: 16px 20px; border-bottom: 1px solid var(--border);
-  font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+.header p{font-size:13px;color:var(--text2)}
+.nav{
+  display:flex;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto;
 }
-.config-panel-body { padding: 20px; }
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: block; font-size: 0.82rem; font-weight: 500;
-  color: var(--text-dim); margin-bottom: 5px;
+.nav button{
+  padding:11px 18px;font-size:13px;cursor:pointer;border:none;background:transparent;color:var(--text3);font-family:inherit;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;
 }
-.form-input, .form-select {
-  width: 100%; background: var(--bg); border: 1px solid var(--border);
-  color: var(--text); padding: 9px 12px; border-radius: 6px;
-  font-size: 0.88rem; font-family: var(--font-body); transition: border-color 0.15s;
+.nav button.active{color:var(--green);border-bottom-color:var(--green);background:rgba(63,185,80,.05)}
+.nav button:hover:not(.active){color:var(--text2)}
+.content{padding:24px 20px;max-width:780px;margin:0 auto}
+.panel{display:none}.panel.active{display:block}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;
 }
-.form-input:focus, .form-select:focus { border-color: var(--accent); outline: none; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 9px 18px; border-radius: 6px; font-size: 0.88rem;
-  font-weight: 600; font-family: var(--font-body); border: none; cursor: pointer; transition: all 0.15s;
+.card-title{
+  font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;display:flex;align-items:center;gap:6px;
 }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent-bright); }
-.btn-secondary { background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); }
-.btn-secondary:hover { color: var(--text); border-color: var(--text-dim); }
-.btn-sm { padding: 5px 10px; font-size: 0.8rem; }
-.btn-group { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
-.output-box {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; padding: 14px; font-family: 'SF Mono', monospace;
-  font-size: 0.8rem; line-height: 1.5; word-break: break-all;
-  max-height: 180px; overflow-y: auto; color: var(--text-dim); white-space: pre-wrap;
+.card-title::before{content:'';display:block;width:3px;height:12px;background:var(--green);border-radius:2px}
+.field{margin-bottom:14px}
+.field label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);margin-bottom:6px}
+.tag{font-size:11px;color:var(--text3);background:#111;border:1px solid var(--border);border-radius:10px;padding:1px 7px}
+.field input,.field select{
+  width:100%;padding:9px 12px;font-size:13px;border:1px solid var(--border2);border-radius:8px;background:#0a0e14;color:var(--text);outline:none;font-family:inherit;
 }
-.output-link {
-  font-family: 'SF Mono', monospace; font-size: 0.78rem;
-  color: var(--accent-bright); word-break: break-all; line-height: 1.4;
+.field input:focus,.field select:focus{border-color:#3fb95066;box-shadow:0 0 0 3px rgba(63,185,80,.08)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.uuid-wrap{position:relative}
+.uuid-box{
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--green);padding:10px 44px 10px 12px;background:#0a0e14;border-radius:8px;border:1px solid var(--border2);word-break:break-all;min-height:40px;line-height:1.6;
 }
-.qr-container {
-  display: flex; justify-content: center; padding: 20px;
-  background: #fff; border-radius: 8px; margin-top: 12px;
+.uuid-copy{
+  position:absolute;left:8px;top:50%;transform:translateY(-50%);background:var(--green-dim);border:1px solid #2d5a30;color:var(--green);cursor:pointer;font-size:13px;padding:4px 8px;border-radius:6px;
 }
-.qr-container img { max-width: 180px; max-height: 180px; }
-.protocol-tabs {
-  display: flex; gap: 3px; background: var(--bg);
-  border-radius: 5px; padding: 3px; margin-bottom: 16px;
+.btns{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.btn{padding:9px 18px;font-size:13px;border:1px solid var(--border2);border-radius:8px;background:transparent;color:var(--text);cursor:pointer;font-family:inherit;transition:all .15s}
+.btn:hover{background:#1a2030;border-color:var(--border2)}
+.btn.pri{background:var(--green);color:#000;border-color:var(--green);font-weight:700;padding:10px 22px}
+.btn.pri:hover{background:#4eca60}
+.btn.sm{padding:5px 11px;font-size:12px}
+.info-box{background:#0a1224;border:1px solid #1a2a44;border-radius:8px;padding:12px;font-size:13px;color:var(--text2);line-height:1.8;margin-top:8px}
+.info-box strong{color:var(--blue)}
+.note{background:#0d1a0e;border:1px solid #1e3022;border-radius:8px;padding:12px;font-size:13px;color:var(--text2);line-height:1.8;margin-top:10px}
+.note strong{color:var(--green)}
+.status-bar{background:#0a1f0c;border:1px solid #1a4020;border-radius:8px;padding:12px;font-size:13px;color:var(--green);display:none;margin-bottom:16px}
+.status-bar.show{display:flex;align-items:center;gap:8px}
+.progress{height:3px;background:var(--green-dim);border-radius:3px;margin-top:8px;overflow:hidden;display:none}
+.progress.show{display:block}
+.progress-bar{height:100%;background:var(--green);border-radius:3px;width:0;transition:width .4s ease}
+.file-row{
+  display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #161c24;
 }
-.protocol-tab {
-  padding: 7px 14px; border-radius: 4px; font-size: 0.8rem;
-  font-weight: 500; color: var(--text-dim); background: transparent;
-  border: none; cursor: pointer; transition: all 0.15s; font-family: var(--font-body);
+.file-row:last-child{border:none}
+.fname{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text)}
+.fdesc{font-size:12px;color:var(--text3);margin-top:2px}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.badge.g{background:var(--green-dim);color:var(--green);border:1px solid #2d5a30}
+.badge.y{background:var(--yellow-dim);color:var(--yellow);border:1px solid #5a4a20}
+.dl-all{
+  width:100%;margin-top:16px;padding:12px;font-size:14px;background:var(--green);color:#000;border:none;border-radius:8px;
+  font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px;
 }
-.protocol-tab.active { background: var(--accent); color: #fff; }
-.protocol-tab:hover:not(.active) { color: var(--text); }
-.guide-section { border-bottom: 1px solid var(--border); padding: 24px 0; }
-.guide-section h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
-.guide-section p { color: var(--text-dim); margin-bottom: 10px; }
-.guide-code {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 6px; padding: 12px 16px; font-family: 'SF Mono', monospace;
-  font-size: 0.8rem; color: var(--accent-bright); overflow-x: auto; margin: 10px 0;
+.dl-all:hover{background:#4eca60;transform:translateY(-1px);box-shadow:0 4px 16px rgba(63,185,80,.3)}
+.ok-msg{color:var(--green);font-size:13px;margin-top:12px;display:none;text-align:center;padding:12px;background:var(--green-dim);border-radius:8px;border:1px solid #2d5a30;font-weight:500}
+.guide-section{border-bottom:1px solid var(--border);padding:20px 0}
+.guide-section h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.guide-section p{font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.8}
+.guide-code{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-bright,#a78bfa);overflow-x:auto;margin:10px 0}
+.guide-step{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #161c24;font-size:13px;color:var(--text2);line-height:1.7}
+.guide-step:last-child{border:none}
+.guide-num{
+  min-width:28px;height:28px;border-radius:50%;background:var(--green-dim);color:var(--green);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;
 }
-footer { border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-dim); font-size: 0.82rem; }
-@media (max-width: 768px) {
-  .hero h1 { font-size: 2rem; }
-  .grid { grid-template-columns: 1fr; }
-  .config-grid { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
+.guide-num.active{background:var(--green);color:#000}
+.gh-btn{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;border:1px solid;cursor:default;
 }
-@media (prefers-reduced-motion: reduce) { * { transition-duration: 0.01ms !important; } }
-.toast {
-  position: fixed; bottom: 20px; right: 20px; z-index: 300;
-  background: var(--success); color: #fff; padding: 10px 18px;
-  border-radius: 8px; font-size: 0.88rem; font-weight: 500;
-  transform: translateY(80px); opacity: 0; transition: all 0.2s;
-}
-.toast.show { transform: translateY(0); opacity: 1; }
-.config-item {
-  background: var(--bg); border: 1px solid var(--border);
-  border-radius: 8px; padding: 12px; margin-bottom: 10px;
-  display: flex; justify-content: space-between; align-items: center; gap: 10px;
-}
-.config-item-info { flex: 1; min-width: 0; }
-.config-item-name { font-weight: 600; font-size: 0.88rem; }
-.config-item-meta { font-size: 0.78rem; color: var(--text-dim); margin-top: 1px; }
-.config-item-actions { display: flex; gap: 5px; flex-shrink: 0; }
-.hidden { display: none; }
+.gh-btn.green{background:#238636;border-color:#2ea043;color:#fff}
+.gh-btn.gray{background:#21262d;border-color:#30363d;color:#c9d1d9}
+.gh-btn.blue{background:#1f6feb;border-color:#388bfd;color:#fff}
+.screen{background:#060a0e;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:12px 0}
+.screen-bar{background:#111820;padding:8px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)}
+.dot{width:10px;height:10px;border-radius:50%}
+.screen-url{background:#0a0e14;border-radius:4px;padding:4px 10px;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;flex:1;border:1px solid var(--border)}
+.screen-body{padding:16px}
+.flow{display:flex;flex-direction:column;gap:0;margin:12px 0}
+.flow-step{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--card);border:1px solid var(--border);margin-bottom:0}
+.flow-step:first-child{border-radius:8px 8px 0 0}
+.flow-step:last-child{border-radius:0 0 8px 8px}
+.flow-step:not(:last-child){border-bottom:none}
+.flow-num{min-width:24px;text-align:center;font-size:14px}
+.flow-text{font-size:13px;color:var(--text)}
+.terminal{background:#020408;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:12px 0}
+.terminal-bar{background:#111820;padding:8px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.terminal-body{padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.9}
+.t-prompt{color:var(--blue)}
+.t-cmd{color:#e6edf3}
+.t-out{color:var(--green)}
+.t-link{color:var(--purple);word-break:break-all}
+.t-comment{color:var(--text3)}
+footer{border-top:1px solid var(--border);padding:24px;text-align:center;color:var(--text3);font-size:12px}
+@media(max-width:540px){.row2{grid-template-columns:1fr}.content{padding:16px 12px}.header{padding:16px 12px}}
 </style>
 </head>
 <body>
 
-<nav style="position:sticky;top:0;z-index:100;background:rgba(15,15,17,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)">
-<div class="container" style="display:flex;align-items:center;justify-content:space-between;height:52px">
-  <a href="#" style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--text)" onclick="showPage('home')">g2<span style="color:var(--accent-bright)">ray</span></a>
-  <ul style="display:flex;gap:6px;list-style:none">
-    <li><a href="#" style="color:var(--text-dim);padding:7px 14px;border-radius:5px;font-size:0.85rem;font-weight:500" onclick="showPage('home')" class="active" data-page="home">Home</a></li>
-    <li><a href="#" style="color:var(--text-dim);padding:7px 14px;border-radius:5px;font-size:0.85rem;font-weight:500" onclick="showPage('config')" data-page="config">Config</a></li>
-    <li><a href="#" style="color:var(--text-dim);padding:7px 14px;border-radius:5px;font-size:0.85rem;font-weight:500" onclick="showPage('guides')" data-page="guides">Guides</a></li>
-  </ul>
-</div>
-</nav>
-
-<main>
-<!-- HOME -->
-<div class="page active" id="page-home">
+<div class="header">
 <div class="container">
-  <div class="hero">
-    <h1>Build Your <span>g2ray</span> Proxy</h1>
-    <p>Full-featured VLESS proxy configurator for GitHub Codespaces. Customize every parameter, generate connection links, deploy.</p>
-  </div>
-  <div class="grid">
-    <div class="card"><h3>Full Customization</h3><p>UUID, port, network type, path, SNI, TLS, fragment, noise -- every parameter adjustable.</p></div>
-    <div class="card"><h3>Multi-Protocol</h3><p>XHTTP, WebSocket, HTTP/2, gRPC -- pick the transport that works for your network.</p></div>
-    <div class="card"><h3>One-Click Export</h3><p>Copy links, generate QR codes, download configs. Share with a single click.</p></div>
-  </div>
-  <h2 class="section-title">Supported Protocols</h2>
-  <p class="section-sub">All protocols run over port 443 with TLS.</p>
-  <div class="grid">
-    <div class="card"><h3>VLESS + XHTTP</h3><p>Default transport. Fastest, lowest overhead.</p></div>
-    <div class="card"><h3>VLESS + WebSocket</h3><p>Hides as regular WebSocket traffic.</p></div>
-    <div class="card"><h3>VLESS + HTTP/2</h3><p>HTTP/2 multiplexing.</p></div>
-    <div class="card"><h3>VLESS + gRPC</h3><p>gRPC transport. Resists DNS blocking.</p></div>
-    <div class="card"><h3>Fragment</h3><p>Breaks TLS records into fragments. Evades SNI blocking.</p></div>
-    <div class="card"><h3>Noise (XUDP)</h3><p>UDP noise packets mask traffic fingerprint.</p></div>
-  </div>
-  <div class="btn-group">
-    <button class="btn btn-primary" onclick="showPage('config')">Create Config</button>
-    <a href="https://github.com/amircloner/g2ray" target="_blank" class="btn btn-secondary" rel="noopener">View Original</a>
-  </div>
+<h1>G2Ray Config Generator <span class="ver">v4</span></h1>
+<p>Generate 6 files, upload to .devcontainer in your fork, create a codespace. Done.</p>
 </div>
 </div>
 
-<!-- CONFIG -->
-<div class="page" id="page-config">
-<div class="container">
-  <h2 class="section-title">Configuration</h2>
-  <p class="section-sub">Tune every parameter. VLESS link generates live.</p>
-  <div class="config-grid">
-    <div>
-      <div class="config-panel">
-        <div class="config-panel-header">Basic</div>
-        <div class="config-panel-body">
-          <div class="form-group">
-            <label class="form-label">Client Name</label>
-            <input type="text" class="form-input" id="cfgName" placeholder="g2ray-proxy" value="g2ray-proxy">
-          </div>
-          <div class="form-group">
-            <label class="form-label">UUID</label>
-            <div style="display:flex;gap:8px">
-              <input type="text" class="form-input" id="cfgUuid" value="">
-              <button class="btn btn-secondary btn-sm" onclick="generateUuid()">Generate</button>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Port</label>
-              <select class="form-select" id="cfgPort">
-                <option value="443">443 (HTTPS)</option>
-                <option value="8443">8443</option>
-                <option value="2053">2053</option>
-                <option value="2083">2083</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Server IP / Host</label>
-              <input type="text" class="form-input" id="cfgHost" placeholder="94.130.50.12" value="94.130.50.12">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="config-panel">
-        <div class="config-panel-header">Network Transport</div>
-        <div class="config-panel-body">
-          <div class="protocol-tabs" id="netTabs">
-            <button class="protocol-tab active" data-net="xhttp" onclick="setNetwork('xhttp')">XHTTP</button>
-            <button class="protocol-tab" data-net="ws" onclick="setNetwork('ws')">WebSocket</button>
-            <button class="protocol-tab" data-net="h2" onclick="setNetwork('h2')">HTTP/2</button>
-            <button class="protocol-tab" data-net="grpc" onclick="setNetwork('grpc')">gRPC</button>
-          </div>
-          <div id="field-xhttp">
-            <div class="form-group">
-              <label class="form-label">Path</label>
-              <input type="text" class="form-input" id="cfgPath" value="/">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Mode</label>
-              <select class="form-select" id="cfgMode">
-                <option value="packet-up">packet-up</option>
-                <option value="xhttp-go">xhttp-go</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Extra (JSON)</label>
-              <textarea class="form-input" id="cfgExtra" rows="3" placeholder='{"padding":[{"bytes":"2048"}]}' style="resize:vertical"></textarea>
-            </div>
-          </div>
-          <div id="field-ws" class="hidden">
-            <div class="form-group"><label class="form-label">Path</label><input type="text" class="form-input" id="cfgWsPath" value="/"></div>
-            <div class="form-group"><label class="form-label">Host Header</label><input type="text" class="form-input" id="cfgWsHost" value="example.com"></div>
-            <div class="form-group">
-              <label class="form-toggle"><input type="checkbox" id="cfgWsEarly" checked> Enable Early Data</label>
-            </div>
-          </div>
-          <div id="field-h2" class="hidden">
-            <div class="form-group"><label class="form-label">Host</label><input type="text" class="form-input" id="cfgH2Host" value="example.com"></div>
-            <div class="form-group"><label class="form-label">Path</label><input type="text" class="form-input" id="cfgH2Path" value="/"></div>
-          </div>
-          <div id="field-grpc" class="hidden">
-            <div class="form-group"><label class="form-label">Service Name</label><input type="text" class="form-input" id="cfgGrpcSvc" value="test"></div>
-            <div class="form-group"><label class="form-toggle"><input type="checkbox" id="cfgGrpcMulti"> Multi-mode</label></div>
-          </div>
-        </div>
-      </div>
-      <div class="config-panel">
-        <div class="config-panel-header">Security</div>
-        <div class="config-panel-body">
-          <div class="form-group">
-            <label class="form-toggle"><input type="checkbox" id="cfgTls" checked> TLS Enabled</label>
-          </div>
-          <div class="form-group">
-            <label class="form-label">SNI</label>
-            <input type="text" class="form-input" id="cfgSni" placeholder="codespace-443.app.github.dev" value="">
-            <span style="font-size:0.72rem;color:var(--text-dim);margin-top:3px;display:block">Format: &lt;codespace-name&gt;-&lt;port&gt;.app.github.dev</span>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Fingerprint</label>
-            <select class="form-select" id="cfgFp">
-              <option value="chrome">chrome</option>
-              <option value="firefox">firefox</option>
-              <option value="safari">safari</option>
-              <option value="ios">ios</option>
-              <option value="edge">edge</option>
-              <option value="360">360</option>
-              <option value="qq">qq</option>
-              <option value="random">random</option>
-              <option value="randomized">randomized</option>
-              <option value="">none</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-toggle"><input type="checkbox" id="cfgReality"> REALITY</label>
-          </div>
-          <div id="realityFields" class="hidden">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Public Key</label><input type="text" class="form-input" id="cfgRealityPk"></div>
-              <div class="form-group"><label class="form-label">Short ID</label><input type="text" class="form-input" id="cfgRealitySid" value=""></div>
-            </div>
-            <div class="form-group"><label class="form-label">Server Name</label><input type="text" class="form-input" id="cfgRealitySni"></div>
-          </div>
-        </div>
-      </div>
-      <div class="config-panel">
-        <div class="config-panel-header">Fragment</div>
-        <div class="config-panel-body">
-          <div class="form-group">
-            <label class="form-toggle"><input type="checkbox" id="cfgFrag"> Enable Fragment</label>
-          </div>
-          <div id="fragFields" class="hidden">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Packet Length</label><input type="text" class="form-input" id="cfgFragLen" placeholder="100-200"></div>
-              <div class="form-group"><label class="form-label">Interval</label><input type="text" class="form-input" id="cfgFragInt" placeholder="10-20"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="config-panel">
-        <div class="config-panel-header">Noise (XUDP)</div>
-        <div class="config-panel-body">
-          <div class="form-group">
-            <label class="form-toggle"><input type="checkbox" id="cfgNoise"> Enable UDP Noise</label>
-          </div>
-          <div id="noiseFields" class="hidden">
-            <div class="form-group">
-              <label class="form-label">UDP Packets</label>
-              <select class="form-select" id="cfgNoisePkt">
-                <option value="d200">d200</option>
-                <option value="d400">d400</option>
-                <option value="b10-20">b10-20</option>
-                <option value="b20-40">b20-40</option>
-                <option value="k">k (keep-alive)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="generateConfig()">&#9654; Generate</button>
-        <button class="btn btn-secondary" onclick="resetConfig()">Reset</button>
+<div class="nav">
+<button class="active" onclick="showPage('gen')">Generator</button>
+<button onclick="showPage('guide')">How to Use</button>
+</div>
+
+<div class="content">
+<div class="panel active" id="page-gen">
+
+  <div class="status-bar" id="statusBar"><span id="statusDot"></span><span id="statusText"></span></div>
+  <div class="progress" id="prog"><div class="progress-bar" id="progBar"></div></div>
+
+  <div class="card">
+    <div class="card-title">Settings</div>
+    <div class="field">
+      <label>Codespace Name <span class="tag">optional</span></label>
+      <input type="text" id="csName" placeholder="leave blank for random name">
+    </div>
+    <div class="field">
+      <label>Xray Version</label>
+      <select id="xrayVer">
+        <option value="v26.3.27">v26.3.27 — latest (recommended)</option>
+        <option value="v25.11.30">v25.11.30</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>UUID <span class="tag">unique every time</span></label>
+      <div class="uuid-wrap">
+        <div class="uuid-box" id="uuidBox">Generating...</div>
+        <button class="uuid-copy" id="uuidCopyBtn" onclick="copyUUID()" title="Copy">Copy</button>
       </div>
     </div>
-    <div>
-      <div class="config-panel">
-        <div class="config-panel-header">VLESS Link</div>
-        <div class="config-panel-body">
-          <div class="output-box" id="linkBox">Configure and generate.</div>
-          <div class="btn-group">
-            <button class="btn btn-secondary btn-sm" onclick="copyLink()" id="copyLinkBtn" style="display:none">Copy</button>
-            <button class="btn btn-secondary btn-sm" onclick="saveProfile()" id="saveBtn" style="display:none">Save Profile</button>
+    <div class="info-box">
+      <strong>Why unique UUID?</strong> If all forks share the same UUID, GitHub detects and bans the account. This generator uses browser crypto for a random UUID — 2^122 possibilities.
+    </div>
+  </div>
+
+  <div class="btns">
+    <button class="btn pri" onclick="generate()">Generate Files</button>
+    <button class="btn" onclick="regenerateUUID()">New UUID</button>
+  </div>
+
+  <div class="card" id="outCard" style="display:none">
+    <div class="card-title">Files Ready to Download</div>
+    <div id="fileList"></div>
+    <button class="dl-all" onclick="dlAll()">Download All 6 Files</button>
+    <div class="ok-msg" id="okMsg">All files downloaded — now follow the guide below</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">What Each File Does</div>
+    <div class="guide-step">
+      <div class="guide-num">📄</div>
+      <div><strong style="color:#fff">config.json</strong> — Xray config: VLESS + xHTTP + TLS + sniffing + DNS + routing + ads/bittorrent blocking</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">📜</div>
+      <div><strong style="color:#fff">setup.sh</strong> — Auto-installs Xray, GeoIP, GeoSite</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">🐋</div>
+      <div><strong style="color:#fff">Dockerfile</strong> — Container build instructions (Debian Bookworm)</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">⚙️</div>
+      <div><strong style="color:#fff">devcontainer.json</strong> — GitHub Codespaces config: port 443, GitHub CLI, auto-start</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">🔗</div>
+      <div><strong style="color:#fff">show-link.sh</strong> — Prints your VLESS connection link</div>
+    </div>
+    <div class="guide-step">
+      <div class="guide-num">▶️</div>
+      <div><strong style="color:#fff">start.sh</strong> — Runs Xray inside tmux session (persistent)</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="panel" id="page-guide">
+  <div class="card">
+    <div class="card-title">Step-by-Step Guide</div>
+
+    <div class="guide-section">
+      <h3>Step 1: Generate Files</h3>
+      <p>Go to the Generator tab, click "Generate Files", then "Download All 6 Files".</p>
+    </div>
+
+    <div class="guide-section">
+      <h3>Step 2: Fork a Repository</h3>
+      <p>Go to <a href="https://github.com/amircloner/g2ray" target="_blank" rel="noopener">github.com/amircloner/g2ray</a> and click <span class="gh-btn green">Fork</span>.</p>
+      <p>Give your fork a name, check "Copy the main branch only", click <span class="gh-btn green">Create fork</span>.</p>
+    </div>
+
+    <div class="guide-section">
+      <h3>Step 3: Upload Files to .devcontainer</h3>
+      <p>In your fork, navigate to <span class="gh-btn gray">.devcontainer</span> folder:</p>
+      <div class="screen">
+        <div class="screen-bar">
+          <div class="dot" style="background:#f85149"></div>
+          <div class="dot" style="background:#e3b341"></div>
+          <div class="dot" style="background:#3fb950"></div>
+          <div class="screen-url">yourname/g2ray — .devcontainer</div>
+        </div>
+        <div class="screen-body">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);line-height:2">
+            <span style="color:var(--blue)">📁</span> .devcontainer<br>
+            &nbsp;&nbsp;<span style="color:var(--yellow)">📄 config.json</span> <span style="color:var(--text3)">— replace</span><br>
+            &nbsp;&nbsp;<span style="color:var(--text)">📜 setup.sh</span><br>
+            &nbsp;&nbsp;<span style="color:var(--text)">🐋 Dockerfile</span><br>
+            &nbsp;&nbsp;<span style="color:var(--yellow)">📄 devcontainer.json</span> <span style="color:var(--text3)">— replace</span><br>
+            &nbsp;&nbsp;<span style="color:var(--yellow)">📄 show-link.sh</span> <span style="color:var(--text3)">— replace</span><br>
+            &nbsp;&nbsp;<span style="color:var(--text)">📜 start.sh</span>
           </div>
         </div>
       </div>
-      <div class="config-panel">
-        <div class="config-panel-header">QR Code</div>
-        <div class="config-panel-body">
-          <div id="qrPlaceholder" style="text-align:center;color:var(--text-dim);padding:20px;font-size:0.9rem">QR code appears after generating.</div>
-          <div id="qrContainer" class="qr-container" style="display:none"><img id="qrImage" src="" alt="QR Code"></div>
-        </div>
+      <p>For each <strong style="color:var(--yellow)">marked file</strong>:</p>
+      <div class="flow">
+        <div class="flow-step"><span class="flow-num">1</span><span class="flow-text">Click the filename</span></div>
+        <div class="flow-step"><span class="flow-num">2</span><span class="flow-text">Click the pencil icon (Edit this file) in the top-right</span></div>
+        <div class="flow-step"><span class="flow-num">3</span><span class="flow-text">Select all (Ctrl+A) and delete</span></div>
+        <div class="flow-step"><span class="flow-num">4</span><span class="flow-text">Paste the content from your downloaded file</span></div>
+        <div class="flow-step"><span class="flow-num">5</span><span class="flow-text">Commit changes at the bottom</span></div>
       </div>
-      <div class="config-panel">
-        <div class="config-panel-header">Xray Config JSON</div>
-        <div class="config-panel-body">
-          <div class="output-box" id="jsonBox">Generated Xray config appears here.</div>
-          <div class="btn-group">
-            <button class="btn btn-secondary btn-sm" onclick="copyJson()" id="copyJsonBtn" style="display:none">Copy JSON</button>
+      <div class="note"><strong>Important:</strong> Dockerfile must have no file extension (not .txt or .sh). GitHub editor handles this correctly by default.</div>
+    </div>
+
+    <div class="guide-section">
+      <h3>Step 4: Create Codespace</h3>
+      <p>In your fork, click the green <span class="gh-btn green">Code</span> button &rarr; <strong>Codespaces</strong> tab &rarr; <strong>+ New codespace on main</strong>.</p>
+      <div class="screen">
+        <div class="screen-bar">
+          <div class="dot" style="background:#f85149"></div>
+          <div class="dot" style="background:#e3b341"></div>
+          <div class="dot" style="background:#3fb950"></div>
+          <div class="screen-url">github.com/yourname/g2ray</div>
+        </div>
+        <div class="screen-body">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:12px"><div class="gh-btn green">Code</div></div>
+          <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px">
+            <div style="font-size:12px;color:#8b949e;margin-bottom:8px">Codespaces</div>
+            <div style="font-size:12px;color:#8b949e;margin-bottom:8px">No codespaces yet</div>
+            <div class="gh-btn green" style="width:100%;justify-content:center;padding:8px">+ New codespace on main</div>
           </div>
         </div>
       </div>
-      <div class="config-panel">
-        <div class="config-panel-header">Saved Profiles (<span id="profileCount">0</span>)</div>
-        <div class="config-panel-body">
-          <div class="config-list" id="profileList"></div>
-          <div class="btn-group" id="profileActions" style="display:none">
-            <button class="btn btn-secondary btn-sm" onclick="clearProfiles()" style="color:var(--danger)">Clear All</button>
-          </div>
+      <p>Wait 3-5 minutes for build.</p>
+    </div>
+
+    <div class="guide-section">
+      <h3>Step 5: Get Your VLESS Link</h3>
+      <p>After the codespace builds, the terminal auto-runs <code style="color:var(--yellow)">start.sh</code> which shows your link:</p>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot" style="background:#f85149"></div>
+          <div class="dot" style="background:#e3b341"></div>
+          <div class="dot" style="background:#3fb950"></div>
+          <div style="font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace">Terminal</div>
+        </div>
+        <div class="terminal-body">
+          <div class="t-comment"># Xray installed, starting...</div>
+          <div class="t-out">[g2ray] Starting Xray in tmux...</div>
+          <div class="t-out">[g2ray] Downloading Xray v26.3.27...</div>
+          <div class="t-out">[g2ray] Done.</div>
+          <br>
+          <div class="t-link" id="terminalLink">vless://xxxx-xxxx@94.130.50.12:443?...</div>
         </div>
       </div>
+      <p>If the link is not shown, run in terminal:</p>
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="dot" style="background:#f85149"></div>
+          <div class="dot" style="background:#e3b341"></div>
+          <div class="dot" style="background:#3fb950"></div>
+          <div style="font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace">Terminal</div>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">$</span> <span class="t-cmd">show-link.sh</span></div>
+        </div>
+      </div>
+      <div class="note"><strong>Clients:</strong> Android: v2rayNG / Nekobox &nbsp;|&nbsp; Windows: v2rayN / Nekoray &nbsp;|&nbsp; iOS: Streisand / FoXray &nbsp;|&nbsp; Linux: Nekoray</div>
+    </div>
+
+    <div class="guide-section">
+      <h3>Troubleshooting</h3>
+      <div class="guide-step">
+        <div class="guide-num active">⚡</div>
+        <div><strong>Xray not running:</strong> Run <code style="color:var(--yellow)">bash /usr/local/bin/start.sh</code> in terminal</div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-num active">⚡</div>
+        <div><strong>Idle timeout:</strong> Set github.com/settings/codespaces → Default idle timeout → <strong>240 minutes</strong></div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-num active">⚡</div>
+        <div><strong>DNS error:</strong> The setup.sh downloads GeoIP/GeoSite automatically. If missing: <code style="color:var(--yellow)">curl -sL "https://github.com/v2fly/geoip/releases/latest/download/geoip.dat" -o /usr/local/bin/geoip.dat</code></div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-num active">⚡</div>
+        <div><strong>Connection timeout:</strong> Try different transports (ws, h2, grpc) via config.json edit</div>
+      </div>
+      <div class="guide-step">
+        <div class="guide-num active">⚡</div>
+        <div><strong>Free quota:</strong> 120 core-hours/month = ~60 hours real time on 2-core codespace. Stop when done.</div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:16px">
+      <strong>One codespace per account.</strong> Rebuild with new files for a new UUID. Each codespace counts against your monthly quota.
     </div>
   </div>
 </div>
+
 </div>
 
-<!-- GUIDES -->
-<div class="page" id="page-guides">
-<div class="container">
-  <h2 class="section-title">Setup Guides</h2>
-  <p class="section-sub">Step-by-step instructions for deploying your g2ray proxy.</p>
-   <div class="guide-section">
-    <h3>Quick Start</h3>
-    <p>Deploy your g2ray proxy using GitHub Codespaces.</p>
-    <ol style="list-style:none;counter-reset:step">
-      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
-        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">1</span>
-        Fork <a href="https://github.com/amircloner/g2ray" target="_blank">github.com/amircloner/g2ray</a>
-      </li>
-      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
-        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">2</span>
-        Click Code &rarr; Codespaces &rarr; Create codespace on main
-      </li>
-      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
-        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">3</span>
-        Wait 2-5 minutes for Xray to install
-      </li>
-      <li style="counter-increment:step;padding:8px 0 8px 36px;position:relative;color:var(--text-dim)">
-        <span style="position:absolute;left:0;top:8px;width:24px;height:24px;border-radius:5px;background:var(--accent-glow);color:var(--accent-bright);display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:600">4</span>
-        Copy the VLESS link from terminal or use show-link.sh
-      </li>
-    </ol>
-  </div>
-  <div class="guide-section">
-    <h3>Files in .devcontainer/</h3>
-    <p>config.json — Xray config: VLESS + xHTTP + TLS + sniffing + routing + DNS</p>
-    <p>setup.sh — Downloads Xray + GeoIP + GeoSite</p>
-    <p>Dockerfile — Container build (base: debian:bookworm-slim)</p>
-    <p>devcontainer.json — Codespace settings: port 443 public, CLI features</p>
-    <p>show-link.sh — Prints VLESS link (reads UUID from config)</p>
-    <p>start.sh — Runs Xray in tmux session</p>
-  </div>
-  <div class="guide-section">
-    <h3>SNI Format</h3>
-    <p>GitHub port-forwarder issues TLS certs for:</p>
-    <div class="guide-code">&lt;codespace-name&gt;-&lt;port&gt;.app.github.dev</div>
-  </div>
-  <div class="guide-section">
-    <h3>Show Link</h3>
-    <p>If the link isn't shown in the terminal:</p>
-    <div class="guide-code">show-link.sh</div>
-    <p>Or extract manually:</p>
-    <div class="guide-code">UUID=$(grep -o '"id": *"[^"]*"' /etc/xray/g2ray.json | head -1 | grep -o '"[^"]*"$' | tr -d '"')
-echo "vless://${UUID}@94.130.50.12:443?..."</div>
-  </div>
-  <div class="guide-section">
-    <h3>Troubleshooting</h3>
-    <p>Connection times out &rarr; try ws/h2/grpc transport + fragment</p>
-    <p>Slow speeds &rarr; use xhttp-go mode</p>
-    <p>TLS error &rarr; verify SNI matches codespace name</p>
-    <p>Quota used &rarr; stop codespace when not in use</p>
-    <p>Idle timeout &rarr; set github.com/settings/codespaces &rarr; 240 min</p>
-    <p>Start Xray manually &rarr; bash /usr/local/bin/start.sh</p>
-  </div>
-</div>
-</div>
-</main>
-
-<footer><div class="container">g2ray Configurator -- Build, customize, deploy VLESS proxies for GitHub Codespaces.</div></footer>
-<div class="toast" id="toast"></div>
+<footer>
+<div class="container">G2Ray Config Generator — Build files, upload to .devcontainer, create codespace.</div>
+</footer>
 
 <script>
-let currentNetwork = 'xhttp';
-let savedProfiles = JSON.parse(localStorage.getItem('g2ray_profiles') || '[]');
-document.addEventListener('DOMContentLoaded', () => { generateUuid(); renderProfiles(); });
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.querySelectorAll('.nav-links a, .nav-links a[data-page]').forEach(a => a.classList.toggle('active', a.dataset.page === name));
-  window.scrollTo(0, 0);
+var files={};
+function mkUUID(){
+  try{
+    var a=new Uint8Array(16);
+    crypto.getRandomValues(a);
+    a[6]=(a[6]&15)|64;
+    a[8]=(a[8]&63)|128;
+    var h=Array.from(a,function(b){return b.toString(16).padStart(2,'0')}).join('');
+    return h.slice(0,8)+'-'+h.slice(8,12)+'-'+h.slice(12,16)+'-'+h.slice(16,20)+'-'+h.slice(20);
+  }catch(e){
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0;return(c==='x'?r:(r&3|8)).toString(16)});
+  }
 }
-function generateUuid() { document.getElementById('cfgUuid').value = crypto.randomUUID(); }
-function setNetwork(net) {
-  currentNetwork = net;
-  document.querySelectorAll('#netTabs .protocol-tab').forEach(t => t.classList.toggle('active', t.dataset.net === net));
-  ['xhttp','ws','h2','grpc'].forEach(n => { const el = document.getElementById('field-' + n); if (el) el.classList.toggle('hidden', n !== net); });
+function randName(){
+  var a=['swift','dark','bright','cold','sharp','calm','bold','silver','fast','safe','nova','echo','storm'];
+  var b=['proxy','relay','node','gate','link','wave','edge','mesh','bridge','tunnel','shield','core'];
+  var h='';for(var i=0;i<6;i++)h+='0123456789abcdef'[Math.random()*16|0];
+  return a[Math.random()*a.length|0]+'-'+b[Math.random()*b.length|0]+'-'+h;
 }
-document.getElementById('cfgTls').addEventListener('change', () => document.getElementById('realityFields').classList.toggle('hidden', !this.checked));
-document.getElementById('cfgReality').addEventListener('change', () => document.getElementById('realityFields').classList.toggle('hidden', !this.checked));
-document.getElementById('cfgFrag').addEventListener('change', () => document.getElementById('fragFields').classList.toggle('hidden', !this.checked));
-document.getElementById('cfgNoise').addEventListener('change', () => document.getElementById('noiseFields').classList.toggle('hidden', !this.checked));
-function generateConfig() {
-  const uuid = document.getElementById('cfgUuid').value.trim();
-  const name = document.getElementById('cfgName').value.trim() || 'g2ray-proxy';
-  const port = document.getElementById('cfgPort').value;
-  const host = document.getElementById('cfgHost').value.trim();
-  const tls = document.getElementById('cfgTls').checked;
-  const sniInput = document.getElementById('cfgSni').value.trim();
-  const sni = sniInput || host + '-' + port + '.app.github.dev';
-  const fp = document.getElementById('cfgFp').value;
-  const reality = document.getElementById('cfgReality').checked;
-  if (!uuid || !host) { showToast('Fill in UUID and Server IP.'); return; }
-  const params = { encryption: 'none', type: currentNetwork };
-  if (currentNetwork === 'xhttp') {
-    params.path = document.getElementById('cfgPath').value.trim() || '/';
-    params.mode = document.getElementById('cfgMode').value;
-    const extra = document.getElementById('cfgExtra').value.trim();
-    if (extra) { try { params.extra = JSON.parse(extra); } catch(e) { showToast('Invalid JSON in Extra.'); return; } }
-  } else if (currentNetwork === 'ws') {
-    params.path = document.getElementById('cfgWsPath').value.trim() || '/';
-    params.host = document.getElementById('cfgWsHost').value.trim() || 'example.com';
-    if (document.getElementById('cfgWsEarly').checked) { params.earlyData = true; params.earlyDataHeaderName = 'Sec-WebSocket-Protocol'; }
-  } else if (currentNetwork === 'h2') {
-    params.host = document.getElementById('cfgH2Host').value.trim() || 'example.com';
-    params.path = document.getElementById('cfgH2Path').value.trim() || '/';
-  } else if (currentNetwork === 'grpc') {
-    params.serviceName = document.getElementById('cfgGrpcSvc').value.trim() || 'test';
-    if (document.getElementById('cfgGrpcMulti').checked) params.multiMode = true;
-  }
-  if (tls) {
-    params.security = reality ? 'reality' : 'tls';
-    params.sni = sni;
-    if (fp) params.fp = fp;
-    if (reality) {
-      params.pbk = document.getElementById('cfgRealityPk').value.trim();
-      params.sid = document.getElementById('cfgRealitySid').value.trim();
-      const rSni = document.getElementById('cfgRealitySni').value.trim();
-      if (rSni) params.sni = rSni;
-      if (!params.pbk) { showToast('REALITY requires a Public Key.'); return; }
-    }
-  }
-  if (document.getElementById('cfgFrag').checked) {
-    const fragLen = document.getElementById('cfgFragLen').value.trim();
-    const fragInt = document.getElementById('cfgFragInt').value.trim();
-    if (!fragLen || !fragInt) { showToast('Fragment requires packetLength and interval.'); return; }
-    params.fragment = fragLen + '-' + fragInt;
-  }
-  if (document.getElementById('cfgNoise').checked) {
-    params.noise = JSON.stringify([{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value }]);
-  }
-  if (tls) {
-    params.host = sni;
-    params.fp = fp || 'chrome';
-    params.insecure = '1';
-    params.allowInsecure = '1';
-  }
-  const qs = new URLSearchParams();
-  for (const [k, v] of Object.entries(params)) {
-    if (v !== undefined && v !== '') qs.set(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
-  }
-  const currentLink = 'vless://' + uuid + '@' + host + ':' + port + '?' + qs.toString() + '#' + encodeURIComponent(name);
-  document.getElementById('linkBox').textContent = currentLink;
-  document.getElementById('copyLinkBtn').style.display = 'inline-flex';
-  document.getElementById('saveBtn').style.display = 'inline-flex';
-  const qrEl = document.getElementById('qrContainer');
-  const qrImg = document.getElementById('qrImage');
-  const qrPlaceholder = document.getElementById('qrPlaceholder');
-  qrEl.style.display = 'flex';
-  qrPlaceholder.style.display = 'none';
-  qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(currentLink);
-  generateJson(uuid, name, port, host, tls, sni, fp, reality);
-  showToast('Config generated.');
+function generateUUID(){
+  var u=mkUUID();
+  document.getElementById('uuidBox').textContent=u;
+  return u;
 }
-function generateJson(uuid, name, port, host, tls, sni, fp, reality) {
-  const network = currentNetwork;
-  let stream = {};
-  if (network === 'xhttp') {
-    stream.xhttpSettings = { mode: document.getElementById('cfgMode').value, path: document.getElementById('cfgPath').value.trim() || '/', maxUploadSize: 1000000, maxConcurrentUploads: 10 };
-    const extra = document.getElementById('cfgExtra').value.trim();
-    if (extra) { try { stream.xhttpSettings.extra = JSON.parse(extra); } catch(e) {} }
-  } else if (network === 'ws') {
-    stream.wsSettings = { path: document.getElementById('cfgWsPath').value.trim() || '/', headers: { Host: document.getElementById('cfgWsHost').value.trim() || 'example.com' } };
-    if (document.getElementById('cfgWsEarly').checked) { stream.wsSettings.maxEarlyData = 2048; stream.wsSettings.earlyDataHeaderName = 'Sec-WebSocket-Protocol'; }
-  } else if (network === 'h2') {
-    stream.httpSettings = { host: [document.getElementById('cfgH2Host').value.trim() || 'example.com'], path: document.getElementById('cfgH2Path').value.trim() || '/' };
-  } else if (network === 'grpc') {
-    stream.grpcSettings = { serviceName: document.getElementById('cfgGrpcSvc').value.trim() || 'test', multiMode: document.getElementById('cfgGrpcMulti').checked };
-  }
-  if (tls) {
-    stream.security = 'tls';
-    if (reality) {
-      stream.tlsSettings = { serverNames: [sni] };
-      stream.realitySettings = { publicKey: document.getElementById('cfgRealityPk').value.trim(), shortId: document.getElementById('cfgRealitySid').value.trim() || '', serverNames: [document.getElementById('cfgRealitySni').value.trim() || sni] };
-      if (fp) stream.realitySettings.fingerprint = fp;
-    } else {
-      stream.tlsSettings = { serverNames: [sni] };
-      if (fp) stream.tlsSettings.fingerprint = fp;
-    }
-  } else {
-    stream.security = 'none';
-  }
-  const inbound = {
-    tag: 'vless-in', port: parseInt(port), listen: '0.0.0.0', protocol: 'vless',
-    settings: { clients: [{ id: uuid, flow: '', level: 0 }], decryption: 'none' },
-    sniffing: { enabled: true, destOverride: ['http','tls','quic'], routeOnly: false },
-    streamSettings: stream
-  };
-  const config = {
-    log: { loglevel: 'warning', access: 'none', error: '/tmp/xray-error.log' },
-    dns: {
-      servers: [{ address: 'https://1.1.1.1/dns-query', domains: ['geosite:geolocation-!cn'], queryStrategy: 'UseIP' }, '8.8.8.8', 'localhost'],
-      queryStrategy: 'UseIPv4'
-    },
-    inbounds: [inbound],
-    outbounds: [
-      { tag: 'direct', protocol: 'freedom', settings: { domainStrategy: 'UseIPv4' } },
-      { tag: 'block', protocol: 'blackhole', settings: { response: { type: 'http' } } }
-    ],
-    routing: {
-      domainStrategy: 'IPIfNonMatch',
-      rules: [
-        { type: 'field', ip: ['geoip:private'], outboundTag: 'block' },
-        { type: 'field', protocol: ['bittorrent'], outboundTag: 'block' },
-        { type: 'field', domain: ['geosite:category-ads-all'], outboundTag: 'block' }
-      ]
-    },
-    policy: { levels: { '0': { handshake: 4, connIdle: 300, uplinkOnly: 2, downlinkOnly: 5, bufferSize: 512 } } }
-  };
-  if (document.getElementById('cfgFrag').checked) {
-    config.outbounds.push({ tag: 'fragment-out', protocol: 'freedom', settings: { fragment: { packets: 'tlshello', length: document.getElementById('cfgFragLen').value.trim() || '100-200', interval: { min: document.getElementById('cfgFragInt').value.trim().split('-')[0] || '10', max: document.getElementById('cfgFragInt').value.trim().split('-')[1] || '20' } } } });
-    config.outbounds.push({ tag: 'proxy-out', protocol: 'vless', settings: { vnext: [{ address: host, port: parseInt(port), users: [{ id: uuid, encryption: 'none' }] }] }, streamSettings: stream });
-  }
-  if (document.getElementById('cfgNoise').checked) {
-    config.outbounds.push({ tag: 'noise-out', protocol: 'noise', settings: [{ type: 'udp', packet: document.getElementById('cfgNoisePkt').value }] });
-  }
-  const currentJson = JSON.stringify(config, null, 2);
-  document.getElementById('jsonBox').textContent = currentJson;
-  document.getElementById('copyJsonBtn').style.display = 'inline-flex';
+window.uuid=generateUUID();
+function regenerateUUID(){uuid=generateUUID()}
+function copyUUID(){
+  navigator.clipboard.writeText(uuid).then(function(){
+    var b=document.getElementById('uuidCopyBtn');
+    b.textContent='Copied';
+    setTimeout(function(){b.textContent='Copy'},1500);
+  });
 }
-function copyLink() { navigator.clipboard.writeText(document.getElementById('linkBox').textContent).then(() => showToast('Link copied.')); }
-function copyJson() { navigator.clipboard.writeText(document.getElementById('jsonBox').textContent).then(() => showToast('JSON copied.')); }
-function saveProfile() {
-  const profile = { id: Date.now().toString(), name: document.getElementById('cfgName').value.trim() || 'g2ray-proxy', link: document.getElementById('linkBox').textContent, network: currentNetwork, port: document.getElementById('cfgPort').value, host: document.getElementById('cfgHost').value.trim() };
-  savedProfiles.push(profile);
-  localStorage.setItem('g2ray_profiles', JSON.stringify(savedProfiles));
-  renderProfiles();
-  showToast('Profile saved.');
+function showPage(id){
+  document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('active')});
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelector('.nav button:nth-child('+((id==='gen')?'1':'2')+'), .nav button:last-child').classList.add('active');
+  if(id==='gen')document.querySelectorAll('.nav button')[0].classList.add('active');
+  else document.querySelectorAll('.nav button')[1].classList.add('active');
+  document.getElementById('page-'+id).classList.add('active');
 }
-function renderProfiles() {
-  const list = document.getElementById('profileList');
-  const actions = document.getElementById('profileActions');
-  document.getElementById('profileCount').textContent = savedProfiles.length;
-  if (!savedProfiles.length) { list.innerHTML = '<p style="color:var(--text-dim);font-size:0.82rem">No saved profiles.</p>'; actions.style.display = 'none'; return; }
-  actions.style.display = 'flex';
-  list.innerHTML = savedProfiles.map(p => '<div class="config-item"><div class="config-item-info"><div class="config-item-name">' + p.name + '</div><div class="config-item-meta">' + p.network + ' | ' + p.host + ':' + p.port + '</div></div><div class="config-item-actions"><button class="btn btn-secondary btn-sm" onclick="copyProfile(\'' + p.id + '\')">Copy</button><button class="btn btn-secondary btn-sm" onclick="deleteProfile(\'' + p.id + '\')" style="color:var(--danger)">Delete</button></div></div>').join('');
+function generate(){
+  if(!uuid)uuid=mkUUID();
+  var ver=document.getElementById('xrayVer').value;
+  var nm=document.getElementById('csName').value.trim()||randName();
+  var sb=document.getElementById('statusBar');
+  var prog=document.getElementById('prog');
+  var bar=document.getElementById('progBar');
+  sb.style.display='flex';
+  document.getElementById('statusText').textContent='Generating files...';
+  prog.style.display='block';
+  bar.style.width='10%';
+  setTimeout(function(){bar.style.width='40%'},200);
+  setTimeout(function(){bar.style.width='70%'},500);
+  setTimeout(function(){
+    var cfg={
+      log:{loglevel:"warning",access:"none",error:"/tmp/xray-error.log"},
+      dns:{
+        servers:[
+          {address:"https://1.1.1.1/dns-query",domains:["geosite:geolocation-!cn"],queryStrategy:"UseIP"},
+          "8.8.8.8","localhost"
+        ],
+        queryStrategy:"UseIPv4"
+      },
+      inbounds:[{
+        tag:"vless-in",port:443,listen:"0.0.0.0",protocol:"vless",
+        settings:{clients:[{id:uuid,flow:"",level:0}],decryption:"none"},
+        sniffing:{enabled:true,destOverride:["http","tls","quic"],routeOnly:false},
+        streamSettings:{
+          network:"xhttp",security:"none",
+          xhttpSettings:{mode:"packet-up",path:"/",maxUploadSize:1000000,maxConcurrentUploads:10}
+        }
+      }],
+      outbounds:[
+        {tag:"direct",protocol:"freedom",settings:{domainStrategy:"UseIPv4"}},
+        {tag:"block",protocol:"blackhole",settings:{response:{type:"http"}}}
+      ],
+      routing:{
+        domainStrategy:"IPIfNonMatch",
+        rules:[
+          {type:"field",ip:["geoip:private"],outboundTag:"block"},
+          {type:"field",protocol:["bittorrent"],outboundTag:"block"},
+          {type:"field",domain:["geosite:category-ads-all"],outboundTag:"block"}
+        ]
+      },
+      policy:{levels:{"0":{handshake:4,connIdle:300,uplinkOnly:2,downlinkOnly:5,bufferSize:512}}}
+    };
+    var cfgStr=JSON.stringify(cfg,null,2);
+    var setup=[
+      '#!/bin/sh','set -e',
+      'RELEASE="https://github.com/XTLS/Xray-core/releases/download/'+ver+'/Xray-linux-64.zip"',
+      'TMPDIR="$(mktemp -d)"',
+      'echo "[g2ray] Downloading Xray '+ver+'..."',
+      'curl -sL "$RELEASE" -o "$TMPDIR/xray.zip"',
+      'unzip -q "$TMPDIR/xray.zip" -d "$TMPDIR"',
+      'install -m 755 "$TMPDIR/xray" /usr/local/bin/xray',
+      'echo "[g2ray] Downloading GeoIP and GeoSite..."',
+      'curl -sL "https://github.com/v2fly/geoip/releases/latest/download/geoip.dat" -o /usr/local/bin/geoip.dat',
+      'curl -sL "https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat" -o /usr/local/bin/geosite.dat',
+      'rm -rf "$TMPDIR"',
+      'echo "[g2ray] Done."'
+    ].join('\n');
+    var dockerfile=[
+      'FROM debian:bookworm-slim',
+      'ENV XRAY_VERSION='+ver,
+      'COPY setup.sh /tmp/setup.sh',
+      'COPY config.json /etc/xray/g2ray.json',
+      'COPY show-link.sh /usr/local/bin/show-link.sh',
+      'COPY start.sh /usr/local/bin/start.sh',
+      'RUN apt-get update \\\\',
+      '    && apt-get install -y --no-install-recommends \\\\',
+      '       bash curl wget unzip ca-certificates openssl uuid-runtime tmux \\\\',
+      '    && rm -rf /var/lib/apt/lists/* \\\\',
+      '    && mkdir -p /etc/xray \\\\',
+      '    && chmod +x /tmp/setup.sh \\\\',
+      '    && /tmp/setup.sh \\\\',
+      '    && rm /tmp/setup.sh \\\\',
+      '    && chmod +x /usr/local/bin/show-link.sh \\\\',
+      '    && chmod +x /usr/local/bin/start.sh',
+      'EXPOSE 443',
+      'CMD ["/usr/local/bin/xray","run","-c","/etc/xray/g2ray.json"]'
+    ].join('\n');
+    var devcon=JSON.stringify({
+      name:nm,
+      build:{dockerfile:"Dockerfile",context:"."},
+      features:{
+        "ghcr.io/devcontainers/features/common-utils:2":{installZsh:false},
+        "ghcr.io/devcontainers/features/github-cli:1":{version:"latest"}
+      },
+      postAttachCommand:"gh codespace ports visibility 443:public -c $CODESPACE_NAME && bash /usr/local/bin/startup.sh",
+      portsAttributes:{"443":{label:nm,protocol:"http",onAutoForward:"silent"}},
+      forwardPorts:[443],
+      hostRequirements:{cpus:2}
+    },null,2);
+    var showlink=[
+      '#!/bin/bash',
+      'CONFIG="/etc/xray/g2ray.json"',
+      'UUID=$(grep -o \'"id": *"[^"]*"\' "$CONFIG" | head -1 | grep -o \'"[^"]*"$\' | tr -d \'"\')',
+      'if [ -z "$UUID" ]; then echo "[g2ray] UUID not found."; exit 1; fi',
+      'SNI="${CODESPACE_NAME}-443.app.github.dev"',
+      'LINK="vless://${UUID}@94.130.50.12:443?encryption=none&security=tls&sni=${SNI}&host=${SNI}&fp=chrome&allowInsecure=1&type=xhttp&mode=packet-up&path=%2F#'+nm+'"',
+      'echo ""',
+      'echo "================================================"',
+      'echo "  $LINK"',
+      'echo "================================================"',
+      'echo ""'
+    ].join('\n');
+    var startsh=[
+      '#!/bin/bash',
+      'echo "[g2ray] Starting Xray in tmux..."',
+      'tmux kill-session -t g2ray 2>/dev/null || true',
+      'tmux new-session -d -s g2ray',
+      'tmux send-keys -t g2ray "sudo /usr/local/bin/xray run -c /etc/xray/g2ray.json &>/tmp/xray.log" Enter',
+      'sleep 3',
+      'show-link.sh',
+      'echo ""',
+      'echo "[g2ray] Server running in tmux session g2ray"',
+      'echo "[g2ray] View logs: tmux attach -t g2ray"',
+      'echo "[g2ray] Stop: tmux kill-session -t g2ray"'
+    ].join('\n');
+    var startup=[
+      '#!/bin/bash',
+      'echo "[g2ray] Generating config..."',
+      'UUID="${G2RAY_UUID:-'+uuid+'}"',
+      'PORT="${G2RAY_PORT:-443}"',
+      'SNI="${G2RAY_SNI:-${CODESPACE_NAME}-443.app.github.dev}"',
+      'HOST_IP="${G2RAY_HOST:-94.130.50.12}"',
+      'FP="${G2RAY_FP:-chrome}"',
+      'echo "[g2ray] UUID: $UUID"',
+      'echo "[g2ray] SNI: $SNI"',
+      'echo ""',
+      'echo "================================================"',
+      'echo "  vless://$UUID@$HOST_IP:$PORT?encryption=none&security=tls&sni=${SNI}&host=${SNI}&fp=${FP}&allowInsecure=1&type=xhttp&mode=packet-up&path=%2F#'+nm+'"',
+      'echo "================================================"',
+      'echo ""',
+      'echo "[g2ray] Starting Xray..."',
+      'exec /usr/local/bin/xray -c /etc/xray/g2ray.json'
+    ].join('\n');
+    files={
+      'config.json':cfgStr,
+      'setup.sh':setup,
+      'Dockerfile':dockerfile,
+      'devcontainer.json':devcon,
+      'show-link.sh':showlink,
+      'start.sh':startsh,
+      'startup.sh':startup
+    };
+    var desc={
+      'config.json':'Xray: VLESS+xHTTP+TLS+sniffing+routing+DNS',
+      'setup.sh':'Install Xray + GeoIP + GeoSite',
+      'Dockerfile':'Container build (Debian Bookworm)',
+      'devcontainer.json':'Codespaces config: port 443, auto-start',
+      'show-link.sh':'Print VLESS connection link',
+      'start.sh':'Run Xray in tmux session',
+      'startup.sh':'Entry point: prints link + starts Xray'
+    };
+    var unique=['config.json','devcontainer.json','show-link.sh'];
+    var html='';
+    Object.keys(desc).forEach(function(n){
+      var isU=unique.indexOf(n)>=0;
+      var badge=isU?'<span class="badge y">Unique</span>':'<span class="badge g">Fixed</span>';
+      html+='<div class="file-row"><div><div class="fname">'+n+'</div><div class="fdesc">'+desc[n]+'</div></div><div style="display:flex;align-items:center;gap:8px">'+badge+'<button class="btn sm" onclick="dl(\''+n+'\')">Download</button></div></div>';
+    });
+    document.getElementById('fileList').innerHTML=html;
+    document.getElementById('outCard').style.display='block';
+    bar.style.width='100%';
+    document.getElementById('statusText').textContent='Files ready!';
+    setTimeout(function(){sb.style.display='none';prog.style.display='none';bar.style.width='0'},1500);
+    // Update terminal preview
+    var sni=nm+'-443.app.github.dev';
+    document.getElementById('terminalLink').textContent='vless://'+uuid+'@94.130.50.12:443?encryption=none&security=tls&sni='+sni+'&fp=chrome&allowInsecure=1&type=xhttp&mode=packet-up&path=%2F#'+nm;
+  },800);
 }
-function copyProfile(id) { const p = savedProfiles.find(x => x.id === id); if (p) navigator.clipboard.writeText(p.link).then(() => showToast('Profile copied.')); }
-function deleteProfile(id) { savedProfiles = savedProfiles.filter(x => x.id !== id); localStorage.setItem('g2ray_profiles', JSON.stringify(savedProfiles)); renderProfiles(); showToast('Profile deleted.'); }
-function clearProfiles() { savedProfiles = []; localStorage.setItem('g2ray_profiles', '[]'); renderProfiles(); showToast('Cleared.'); }
-function resetConfig() {
-  document.getElementById('cfgName').value = 'g2ray-proxy'; generateUuid(); document.getElementById('cfgPort').value = '443'; document.getElementById('cfgHost').value = '94.130.50.12'; document.getElementById('cfgSni').value = ''; document.getElementById('cfgFp').value = 'chrome'; document.getElementById('cfgTls').checked = true; document.getElementById('cfgReality').checked = false; document.getElementById('cfgFrag').checked = false; document.getElementById('cfgNoise').checked = false; document.getElementById('cfgPath').value = '/'; document.getElementById('cfgMode').value = 'packet-up'; document.getElementById('cfgExtra').value = ''; document.getElementById('cfgWsPath').value = '/'; document.getElementById('cfgWsHost').value = 'example.com'; document.getElementById('cfgWsEarly').checked = true; document.getElementById('cfgH2Host').value = 'example.com'; document.getElementById('cfgH2Path').value = '/'; document.getElementById('cfgGrpcSvc').value = 'test'; document.getElementById('cfgGrpcMulti').checked = false; document.getElementById('cfgFragLen').value = ''; document.getElementById('cfgFragInt').value = '';
-  setNetwork('xhttp'); document.getElementById('realityFields').classList.add('hidden'); document.getElementById('fragFields').classList.add('hidden'); document.getElementById('noiseFields').classList.add('hidden');
-  document.getElementById('linkBox').textContent = 'Configure and generate.'; document.getElementById('copyLinkBtn').style.display = 'none'; document.getElementById('saveBtn').style.display = 'none'; document.getElementById('qrContainer').style.display = 'none'; document.getElementById('qrPlaceholder').style.display = 'block'; document.getElementById('jsonBox').textContent = 'Generated Xray config.'; document.getElementById('copyJsonBtn').style.display = 'none';
-  showToast('Reset.');
+function dl(name){
+  if(!files[name])return;
+  var mime=name==='Dockerfile'?'application/octet-stream':'text/plain';
+  var blob=new Blob([files[name]],{type:mime+';charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=name;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(a.href)},200);
 }
-function showToast(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.add('show'); clearTimeout(toast._timer); toast._timer = setTimeout(() => toast.classList.remove('show'), 2500); }
+function dlAll(){
+  if(!Object.keys(files).length){alert('Click Generate first');return}
+  var order=['config.json','setup.sh','Dockerfile','devcontainer.json','show-link.sh','start.sh','startup.sh'];
+  var i=0;
+  function next(){
+    if(i<order.length){dl(order[i]);i++;setTimeout(next,600)}
+    else{document.getElementById('okMsg').style.display='block'}
+  }
+  next();
+}
 </script>
 </body>
 </html>

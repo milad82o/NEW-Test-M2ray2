@@ -35,7 +35,8 @@ LINK="vless://${UUID}@94.130.50.12:443?encryption=none&security=tls&sni=${SNI}&h
 
 vless://${UUID}@50.7.5.83:443?encryption=none&security=tls&sni=${SNI}&host=${SNI}&fp=chrome&allowInsecure=1&type=xhttp&mode=packet-up&path=%2F#${NAME}
 
-vless://${UUID}@63.141.252.203:443?encryption=none&security=tls&sni=${SNI}&host=${SNI}&fp=chrome&allowInsecure=1&type=xhttp&mode=packet-up&path=%2F#${NAME}
+vless://${UUID}@63.141.252.203:443?encryption=none&security=tls&sni=${SNI}&host=${SNI}&fp=chrome&allowInsecure=1&type=xhttp&mode=packet-up&path=%2F#${NAME}"
+
 
 echo ""
 echo "================================================"
